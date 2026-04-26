@@ -39,6 +39,8 @@ export default function AppHeader() {
       <nav style={{ display: "flex", gap: "0.9rem", alignItems: "center", flexWrap: "wrap" }}>
         <Link href="/products">Shop</Link>
         <Link href="/cart">Cart ({count})</Link>
+        <Link href="/checkout">Checkout</Link>
+        <Link href="/orders">Orders</Link>
         <Link href="/login">Login</Link>
         <Link href="/register">Register</Link>
       </nav>
