@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   fetchCart,
@@ -51,6 +52,10 @@ export default function CartPage() {
       <h1>Your Cart</h1>
       <p style={{ marginTop: "0.5rem", color: "#555" }}>Total items: {cart.totalItems}</p>
       <p style={{ marginTop: "0.2rem", fontWeight: 700 }}>Subtotal: ${cart.subtotal.toFixed(2)}</p>
+      <div style={{ marginTop: "0.6rem", display: "flex", gap: "0.8rem" }}>
+        <Link href="/checkout">Go to checkout</Link>
+        <Link href="/orders">Order history</Link>
+      </div>
 
       {error ? <p style={{ marginTop: "0.8rem", color: "crimson" }}>{error}</p> : null}
 
