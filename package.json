@@ -1,0 +1,29 @@
+{
+  "name": "beauty",
+  "version": "1.0.0",
+  "scripts": {
+    "setup:env": "node scripts/setup-env.mjs",
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "dev:up": "npm run setup:env && docker compose up -d && npm run dev",
+    "dev:client": "npm run dev --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev:frontend": "npm run dev:client",
+    "dev:backend": "npm run dev:server",
+    "build": "npm run build --prefix server && npm run build --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Enqutk/Women-s_Fashion-Beauty.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Enqutk/Women-s_Fashion-Beauty/issues"
+  },
+  "homepage": "https://github.com/Enqutk/Women-s_Fashion-Beauty#readme",
+  "description": "Women’s Fashion & Beauty E-Commerce Platform monorepo setup",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
