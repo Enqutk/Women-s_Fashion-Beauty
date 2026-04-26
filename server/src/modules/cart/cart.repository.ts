@@ -89,3 +89,7 @@ export async function removeCartItem(userId: number, productId: number): Promise
 
   return (rowCount ?? 0) > 0;
 }
+
+export async function clearCartByUserId(userId: number): Promise<void> {
+  await pool.query(`DELETE FROM cart_items WHERE user_id = $1`, [userId]);
+}
