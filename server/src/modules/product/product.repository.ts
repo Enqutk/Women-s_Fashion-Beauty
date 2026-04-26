@@ -131,3 +131,10 @@ export async function deleteProduct(id: number): Promise<boolean> {
   const { rowCount } = await pool.query(`DELETE FROM products WHERE id = $1`, [id]);
   return (rowCount ?? 0) > 0;
 }
+
+export async function countProducts(): Promise<number> {
+  const { rows } = await pool.query<{ total: string }>(
+    `SELECT COUNT(*)::text AS total FROM products`,
+  );
+  return Number(rows[0]?.total ?? 0);
+}
