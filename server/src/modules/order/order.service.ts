@@ -1,6 +1,6 @@
 import { clearCartByUserId } from "../cart/cart.repository";
 import { getCartByUserId } from "../cart/cart.service";
-import { createOrderWithItems, listOrdersByUserId } from "./order.repository";
+import { createOrderWithItems, listAllOrders, listOrdersByUserId, updateOrderStatus } from "./order.repository";
 import type { Order } from "./order.model";
 
 export async function placeOrder(userId: number): Promise<Order> {
@@ -26,4 +26,15 @@ export async function placeOrder(userId: number): Promise<Order> {
 
 export async function getUserOrders(userId: number): Promise<Order[]> {
   return listOrdersByUserId(userId);
+}
+
+export async function getAllOrders(): Promise<Order[]> {
+  return listAllOrders();
+}
+
+export async function updateOrderStatusService(
+  orderId: number,
+  status: "pending" | "completed" | "cancelled",
+): Promise<Order | null> {
+  return updateOrderStatus(orderId, status);
 }
