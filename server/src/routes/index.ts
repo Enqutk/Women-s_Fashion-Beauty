@@ -1,4 +1,5 @@
 import { Router } from "express";
+import analyticsRoutes from "../modules/analytics";
 import authRoutes from "../modules/auth";
 import cartRoutes from "../modules/cart";
 import categoryRoutes from "../modules/category";
@@ -10,6 +11,7 @@ const router = Router();
 
 router.use("/health", healthRoutes);
 router.use("/auth", authRoutes);
+router.use("/admin/analytics", analyticsRoutes);
 router.use("/cart", cartRoutes);
 router.use("/orders", orderRoutes);
 router.use("/categories", categoryRoutes);
