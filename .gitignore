@@ -1,0 +1,25 @@
+# Node modules
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build outputs
+client/.next/
+client/out/
+server/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+!.env.local.example
+server/.env
+client/.env.local
+
+# OS/editor
+.DS_Store
+Thumbs.db
