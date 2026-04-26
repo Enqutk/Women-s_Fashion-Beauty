@@ -143,3 +143,106 @@ export async function listOrdersByUserId(userId: number): Promise<Order[]> {
 
   return orderRows.map((row) => mapOrderRow(row, itemsByOrderId.get(row.id) ?? []));
 }
+
+export async function listAllOrders(): Promise<Order[]> {
+  const { rows: orderRows } = await pool.query<OrderRow>(
+    `SELECT id, user_id, status, total, created_at
+     FROM orders
+     ORDER BY created_at DESC`,
+  );
+
+  if (orderRows.length === 0) {
+    return [];
+  }
+
+  const orderIds = orderRows.map((row) => row.id);
+  const { rows: itemRows } = await pool.query<OrderItemRow>(
+    `SELECT order_id, product_id, product_name, quantity, unit_price
+     FROM order_items
+     WHERE order_id = ANY($1::int[])
+     ORDER BY id ASC`,
+    [orderIds],
+  );
+
+  const itemsByOrderId = new Map<number, OrderItem[]>();
+  for (const row of itemRows) {
+    const current = itemsByOrderId.get(row.order_id) ?? [];
+    current.push(mapOrderItem(row));
+    itemsByOrderId.set(row.order_id, current);
+  }
+
+  return orderRows.map((row) => mapOrderRow(row, itemsByOrderId.get(row.id) ?? []));
+}
+
+export async function updateOrderStatus(
+  orderId: number,
+  status: OrderStatus,
+): Promise<Order | null> {
+  const { rowCount } = await pool.query(
+    `UPDATE orders
+     SET status = $1
+     WHERE id = $2`,
+    [status, orderId],
+  );
+
+  if ((rowCount ?? 0) === 0) {
+    return null;
+  }
+
+  const { rows: orderRows } = await pool.query<OrderRow>(
+    `SELECT id, user_id, status, total, created_at
+     FROM orders
+     WHERE id = $1
+     LIMIT 1`,
+    [orderId],
+  );
+
+  if (!orderRows[0]) {
+    return null;
+  }
+
+  const { rows: itemRows } = await pool.query<OrderItemRow>(
+    `SELECT order_id, product_id, product_name, quantity, unit_price
+     FROM order_items
+     WHERE order_id = $1
+     ORDER BY id ASC`,
+    [orderId],
+  );
+
+  return mapOrderRow(orderRows[0], itemRows.map(mapOrderItem));
+}
+
+export async function countOrders(): Promise<number> {
+  const { rows } = await pool.query<{ total: string }>(
+    `SELECT COUNT(*)::text AS total FROM orders`,
+  );
+  return Number(rows[0]?.total ?? 0);
+}
+
+export async function getOrderStatusBreakdown(): Promise<
+  Array<{ status: "pending" | "completed" | "cancelled"; count: number }>
+> {
+  const { rows } = await pool.query<{ status: string; total: string }>(
+    `SELECT status, COUNT(*)::text AS total
+     FROM orders
+     GROUP BY status`,
+  );
+
+  const defaultMap: Record<"pending" | "completed" | "cancelled", number> = {
+    pending: 0,
+    completed: 0,
+    cancelled: 0,
+  };
+
+  for (const row of rows) {
+    if (row.status === "pending" || row.status === "completed" || row.status === "cancelled") {
+      defaultMap[row.status] = Number(row.total);
+    }
+  }
+
+  return [
+    { status: "pending", count: defaultMap.pending },
+    { status: "completed", count: defaultMap.completed },
+    { status: "cancelled", count: defaultMap.cancelled },
+  ];
+}
