@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { getUserOrders, placeOrder } from "./order.service";
-import { validatePlaceOrderRequest } from "./order.validation";
+import { getAllOrders, getUserOrders, placeOrder, updateOrderStatusService } from "./order.service";
+import { validateOrderStatusInput, validatePlaceOrderRequest } from "./order.validation";
 
 function getUserId(req: Request): number | null {
   return req.authUser?.id ?? null;
@@ -33,4 +33,33 @@ export async function getUserOrdersController(req: Request, res: Response): Prom
 
   const orders = await getUserOrders(userId);
   res.json(orders);
+}
+
+export async function getAllOrdersController(_req: Request, res: Response): Promise<void> {
+  const orders = await getAllOrders();
+  res.json(orders);
+}
+
+export async function updateOrderStatusController(req: Request, res: Response): Promise<void> {
+  try {
+    const orderId = Number(req.params.id);
+    if (!Number.isInteger(orderId)) {
+      res.status(400).json({ ok: false, message: "Invalid order id" });
+      return;
+    }
+
+    const status = validateOrderStatusInput(req.body);
+    const updatedOrder = await updateOrderStatusService(orderId, status);
+    if (!updatedOrder) {
+      res.status(404).json({ ok: false, message: "Order not found" });
+      return;
+    }
+
+    res.json(updatedOrder);
+  } catch (error) {
+    res.status(400).json({
+      ok: false,
+      message: error instanceof Error ? error.message : "Failed to update order status",
+    });
+  }
 }
