@@ -41,6 +41,8 @@ export default function AppHeader() {
         <Link href="/cart">Cart ({count})</Link>
         <Link href="/checkout">Checkout</Link>
         <Link href="/orders">Orders</Link>
+        <Link href="/admin/dashboard">Dashboard</Link>
+        <Link href="/admin/orders">Admin Orders</Link>
         <Link href="/login">Login</Link>
         <Link href="/register">Register</Link>
       </nav>
