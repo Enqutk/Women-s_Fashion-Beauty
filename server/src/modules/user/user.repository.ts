@@ -57,3 +57,8 @@ export async function createUser(input: CreateUserInput): Promise<User> {
 
   return mapUserRow(rows[0]);
 }
+
+export async function countUsers(): Promise<number> {
+  const { rows } = await pool.query<{ total: string }>(`SELECT COUNT(*)::text AS total FROM users`);
+  return Number(rows[0]?.total ?? 0);
+}
