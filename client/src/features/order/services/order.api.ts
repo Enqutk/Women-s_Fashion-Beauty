@@ -34,3 +34,23 @@ export async function fetchUserOrders(): Promise<Order[]> {
   });
   return parseResponse<Order[]>(response);
 }
+
+export async function fetchAllOrdersAdmin(): Promise<Order[]> {
+  const response = await fetch(`${API_BASE_URL}/api/orders/admin`, {
+    headers: authHeaders(),
+    cache: "no-store",
+  });
+  return parseResponse<Order[]>(response);
+}
+
+export async function updateOrderStatusAdmin(
+  orderId: number,
+  status: "pending" | "completed" | "cancelled",
+): Promise<Order> {
+  const response = await fetch(`${API_BASE_URL}/api/orders/admin/${orderId}/status`, {
+    method: "PATCH",
+    headers: authHeaders(),
+    body: JSON.stringify({ status }),
+  });
+  return parseResponse<Order>(response);
+}
