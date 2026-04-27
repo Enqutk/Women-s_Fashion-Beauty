@@ -49,6 +49,14 @@ export async function ensureOrdersTables(): Promise<void> {
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
+  await pool.query(`
+    CREATE INDEX IF NOT EXISTS orders_user_created_idx
+    ON orders (user_id, created_at DESC);
+  `);
+  await pool.query(`
+    CREATE INDEX IF NOT EXISTS orders_status_idx
+    ON orders (status);
+  `);
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS order_items (
@@ -59,6 +67,10 @@ export async function ensureOrdersTables(): Promise<void> {
       quantity INTEGER NOT NULL CHECK (quantity > 0),
       unit_price NUMERIC(10,2) NOT NULL CHECK (unit_price >= 0)
     );
+  `);
+  await pool.query(`
+    CREATE INDEX IF NOT EXISTS order_items_order_id_idx
+    ON order_items (order_id);
   `);
 }
 
