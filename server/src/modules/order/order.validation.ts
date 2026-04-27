@@ -1,19 +1,17 @@
-export function validatePlaceOrderRequest(): void {
-  // Checkout currently places an order from cart only.
+import { z } from "zod";
+
+const placeOrderSchema = z.object({}).strict();
+
+const updateStatusSchema = z
+  .object({
+    status: z.enum(["pending", "completed", "cancelled"]),
+  })
+  .strict();
+
+export function validatePlaceOrderRequest(input: unknown): void {
+  placeOrderSchema.parse(input ?? {});
 }
 
 export function validateOrderStatusInput(input: unknown): "pending" | "completed" | "cancelled" {
-  if (
-    typeof input === "object" &&
-    input !== null &&
-    "status" in input &&
-    (input as { status: unknown }).status
-  ) {
-    const value = (input as { status: unknown }).status;
-    if (value === "pending" || value === "completed" || value === "cancelled") {
-      return value;
-    }
-  }
-
-  throw new Error("Invalid status. Use pending, completed, or cancelled");
+  return updateStatusSchema.parse(input).status;
 }
