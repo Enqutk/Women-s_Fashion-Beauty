@@ -25,43 +25,48 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <div className={styles.header}>
         <div>
           <h1>Shop Products</h1>
-          <p style={{ marginTop: "0.4rem", color: "#555" }}>
+          <p className={styles.muted}>
             Browse fashion and beauty products by category.
           </p>
         </div>
         <Link href="/">Back to home</Link>
       </div>
 
-      <div className={styles.filterRow}>
-        <Link
-          className={`${styles.chip} ${selectedCategoryId ? "" : styles.chipActive}`}
-          href="/products"
-        >
-          All
-        </Link>
-        {categories.map((category) => {
-          const isActive = selectedCategoryId === category.id;
-          return (
+      <section className={styles.layout}>
+        <aside className={styles.sidebar}>
+          <h2 className={styles.sidebarTitle}>Filters</h2>
+          <div className={styles.filterRow}>
             <Link
-              key={category.id}
-              className={`${styles.chip} ${isActive ? styles.chipActive : ""}`}
-              href={`/products?category=${category.id}`}
+              className={`${styles.chip} ${selectedCategoryId ? "" : styles.chipActive}`}
+              href="/products"
             >
-              {category.name}
+              All
             </Link>
-          );
-        })}
-      </div>
+            {categories.map((category) => {
+              const isActive = selectedCategoryId === category.id;
+              return (
+                <Link
+                  key={category.id}
+                  className={`${styles.chip} ${isActive ? styles.chipActive : ""}`}
+                  href={`/products?category=${category.id}`}
+                >
+                  {category.name}
+                </Link>
+              );
+            })}
+          </div>
+        </aside>
 
-      {filteredProducts.length === 0 ? (
-        <p style={{ marginTop: "1.2rem" }}>No products found for this category.</p>
-      ) : (
-        <section className={styles.grid}>
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </section>
-      )}
+        {filteredProducts.length === 0 ? (
+          <p style={{ marginTop: "1.2rem" }}>No products found for this category.</p>
+        ) : (
+          <section className={styles.grid}>
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </section>
+        )}
+      </section>
     </main>
   );
 }
