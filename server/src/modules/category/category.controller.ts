@@ -9,6 +9,7 @@ import {
   validateCreateCategoryInput,
   validateUpdateCategoryInput,
 } from "./category.validation";
+import { parsePositiveIntParam } from "../../utils/request.utils";
 
 export async function createCategoryController(req: Request, res: Response): Promise<void> {
   try {
@@ -30,8 +31,8 @@ export async function listCategoriesController(_req: Request, res: Response): Pr
 
 export async function updateCategoryController(req: Request, res: Response): Promise<void> {
   try {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id)) {
+    const id = parsePositiveIntParam(req.params.id);
+    if (!id) {
       res.status(400).json({ ok: false, message: "Invalid category id" });
       return;
     }
@@ -52,8 +53,8 @@ export async function updateCategoryController(req: Request, res: Response): Pro
 }
 
 export async function deleteCategoryController(req: Request, res: Response): Promise<void> {
-  const id = Number(req.params.id);
-  if (!Number.isInteger(id)) {
+  const id = parsePositiveIntParam(req.params.id);
+  if (!id) {
     res.status(400).json({ ok: false, message: "Invalid category id" });
     return;
   }
