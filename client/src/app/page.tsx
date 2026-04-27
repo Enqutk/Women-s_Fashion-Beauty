@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AddToCartButton from "@/features/cart/components/AddToCartButton";
 import { fetchCategories, fetchProducts } from "@/features/product/services/product.api";
 import styles from "./home.module.css";
 
@@ -11,13 +12,22 @@ export default async function Home() {
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
-        <div className={styles.heroImage} />
-        <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>Elevate Your Signature Style.</h1>
-          <p className={styles.heroSubtitle}>Discover our latest spring and summer collection.</p>
-          <Link href="/products" className={styles.cta}>
-            SHOP NEW ARRIVALS
-          </Link>
+        <div className={styles.heroImage}>
+          <div className={`${styles.heroSlide} ${styles.slideOne}`} />
+          <div className={`${styles.heroSlide} ${styles.slideTwo}`} />
+          <div className={`${styles.heroSlide} ${styles.slideThree}`} />
+          <div className={styles.heroContent}>
+            <h1 className={styles.heroTitle}>Elevate Your Signature Style.</h1>
+            <p className={styles.heroSubtitle}>Discover our latest spring and summer collection.</p>
+            <Link href="/products" className={styles.cta}>
+              SHOP NEW ARRIVALS
+            </Link>
+          </div>
+          <div className={styles.heroDots} aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
         </div>
       </section>
 
@@ -74,6 +84,12 @@ export default async function Home() {
                   <div className={styles.dealPriceRow}>
                     <span className={styles.dealPrice}>${product.price.toFixed(2)}</span>
                     <span className={styles.dealOldPrice}>${originalPrice.toFixed(2)}</span>
+                  </div>
+                  <div className={styles.dealActions}>
+                    <Link href={`/products/${product.id}`} className={styles.dealViewLink}>
+                      View details
+                    </Link>
+                    <AddToCartButton productId={product.id} />
                   </div>
                 </div>
               </article>
