@@ -9,6 +9,8 @@ import {
   getAuthToken,
 } from "@/features/auth/utils/auth-storage";
 import { fetchCart } from "@/features/cart/services/cart.api";
+import { fetchCategories } from "@/features/product/services/product.api";
+import type { Category } from "@/features/product/types";
 import styles from "./AppHeader.module.css";
 
 function SearchIcon() {
@@ -54,6 +56,21 @@ export default function AppHeader() {
   const [count, setCount] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    async function loadCategories(): Promise<void> {
+      try {
+        const items = await fetchCategories();
+        setCategories(items);
+      } catch (_error) {
+        setCategories([]);
+      }
+    }
+
+    loadCategories();
+  }, []);
 
   useEffect(() => {
     async function loadCount(): Promise<void> {
@@ -102,6 +119,13 @@ export default function AppHeader() {
     return () => window.removeEventListener("cart:changed", loadCount);
   }, []);
 
+  const visibleCategories = categories.slice(0, 8);
+  const hasCategories = visibleCategories.length > 0;
+
+  const closeMenu = (): void => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.topStrip}>women&apos;s fashion and beauty e-commerce</div>
@@ -109,54 +133,65 @@ export default function AppHeader() {
         <Link href="/" className={styles.brand}>
           Mintech Solution.
         </Link>
-        <nav className={styles.nav}>
-          <Link href="/new-arrivals" className={styles.navLink}>
+        <button
+          type="button"
+          className={styles.hamburger}
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMenuOpen}
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+        <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
+          <Link href="/new-arrivals" className={styles.navLink} onClick={closeMenu}>
             NEW ARRIVALS
           </Link>
-          <Link href="/clothing" className={styles.navLink}>
-            CLOTHING
-          </Link>
-          <Link href="/bags" className={styles.navLink}>
-            BAGS
-          </Link>
-          <Link href="/shoes" className={styles.navLink}>
-            SHOES
-          </Link>
-          <Link href="/beauty" className={styles.navLink}>
-            BEAUTY
-          </Link>
-          <Link href="/sale" className={styles.navLink}>
+          {hasCategories
+            ? visibleCategories.map((category) => (
+                <Link
+                  key={category.id}
+                  href={`/products?category=${category.id}`}
+                  className={styles.navLink}
+                  onClick={closeMenu}
+                >
+                  {category.name.toUpperCase()}
+                </Link>
+              ))
+            : null}
+          <Link href="/sale" className={styles.navLink} onClick={closeMenu}>
             SALE
           </Link>
-          <Link href="/products" className={styles.iconLink} aria-label="Search">
+          <Link href="/products" className={styles.iconLink} aria-label="Search" onClick={closeMenu}>
             <SearchIcon />
           </Link>
           {!isAuthenticated ? (
             <>
-              <Link href="/login" className={styles.iconTextLink}>
+              <Link href="/login" className={styles.iconTextLink} onClick={closeMenu}>
                 <UserIcon />
                 <span>Login</span>
               </Link>
-              <Link href="/register" className={styles.navLink}>
+              <Link href="/register" className={styles.navLink} onClick={closeMenu}>
                 Register
               </Link>
             </>
           ) : (
             <>
-              <Link href="/cart" className={styles.iconTextLink}>
+              <Link href="/cart" className={styles.iconTextLink} onClick={closeMenu}>
                 <CartIcon />
                 <span>
                   Cart <span className={styles.cartCount}>({count})</span>
                 </span>
               </Link>
-              <Link href="/checkout" className={styles.navLink}>
+              <Link href="/checkout" className={styles.navLink} onClick={closeMenu}>
                 Checkout
               </Link>
-              <Link href="/orders" className={styles.navLink}>
+              <Link href="/orders" className={styles.navLink} onClick={closeMenu}>
                 Orders
               </Link>
               {isAdmin ? (
-                <Link href="/admin/dashboard" className={styles.navLink}>
+                <Link href="/admin/dashboard" className={styles.navLink} onClick={closeMenu}>
                   Admin
                 </Link>
               ) : null}
@@ -168,6 +203,7 @@ export default function AppHeader() {
                   setIsAuthenticated(false);
                   setIsAdmin(false);
                   setCount(0);
+                  closeMenu();
                   window.dispatchEvent(new Event("cart:changed"));
                 }}
               >
