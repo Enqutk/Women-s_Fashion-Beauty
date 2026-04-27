@@ -13,6 +13,10 @@ export async function ensureUsersTable(): Promise<void> {
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
+  await pool.query(`
+    CREATE INDEX IF NOT EXISTS users_email_idx
+    ON users (email);
+  `);
 }
 
 function mapUserRow(row: {
