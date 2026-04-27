@@ -1,20 +1,17 @@
 import { Request, Response } from "express";
 import { getAllOrders, getUserOrders, placeOrder, updateOrderStatusService } from "./order.service";
 import { validateOrderStatusInput, validatePlaceOrderRequest } from "./order.validation";
-
-function getUserId(req: Request): number | null {
-  return req.authUser?.id ?? null;
-}
+import { getAuthUserId, parsePositiveIntParam } from "../../utils/request.utils";
 
 export async function placeOrderController(req: Request, res: Response): Promise<void> {
   try {
-    const userId = getUserId(req);
+    const userId = getAuthUserId(req);
     if (!userId) {
       res.status(401).json({ ok: false, message: "Unauthorized" });
       return;
     }
 
-    validatePlaceOrderRequest();
+    validatePlaceOrderRequest(req.body);
     const order = await placeOrder(userId);
     res.status(201).json(order);
   } catch (error) {
@@ -25,7 +22,7 @@ export async function placeOrderController(req: Request, res: Response): Promise
 }
 
 export async function getUserOrdersController(req: Request, res: Response): Promise<void> {
-  const userId = getUserId(req);
+  const userId = getAuthUserId(req);
   if (!userId) {
     res.status(401).json({ ok: false, message: "Unauthorized" });
     return;
@@ -42,8 +39,8 @@ export async function getAllOrdersController(_req: Request, res: Response): Prom
 
 export async function updateOrderStatusController(req: Request, res: Response): Promise<void> {
   try {
-    const orderId = Number(req.params.id);
-    if (!Number.isInteger(orderId)) {
+    const orderId = parsePositiveIntParam(req.params.id);
+    if (!orderId) {
       res.status(400).json({ ok: false, message: "Invalid order id" });
       return;
     }
