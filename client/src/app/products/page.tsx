@@ -58,7 +58,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </aside>
 
         {filteredProducts.length === 0 ? (
-          <p style={{ marginTop: "1.2rem" }}>No products found for this category.</p>
+          <p style={{ marginTop: "1.2rem" }}>No products are currently available in this category.</p>
         ) : (
           <section className={styles.grid}>
             {filteredProducts.map((product) => (

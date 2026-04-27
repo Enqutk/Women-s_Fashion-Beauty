@@ -37,7 +37,7 @@ export default async function BeautyPage() {
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Beauty Favorites</h2>
+          <h2 className={styles.sectionTitle}>Featured Beauty</h2>
           <div className={styles.grid}>
             {visibleProducts.map((product) => (
               <article className={styles.item} key={product.id}>
@@ -46,7 +46,7 @@ export default async function BeautyPage() {
                     {product.imageUrl ? (
                       <img src={product.imageUrl} alt={product.name} className={styles.itemImageEl} />
                     ) : (
-                      "Image"
+                      "Image unavailable"
                     )}
                   </div>
                 </Link>
@@ -69,9 +69,9 @@ export default async function BeautyPage() {
 
         <section className={styles.banner}>
           <div className={styles.bannerText}>
-            <h3 className={styles.bannerTitle}>Trend Alert: Beauty</h3>
+            <h3 className={styles.bannerTitle}>Editor&apos;s Picks: Beauty</h3>
             <p style={{ marginTop: "0.5rem", color: "#555" }}>
-              Explore our latest skincare and beauty essentials.
+              Discover our latest skincare, makeup, and fragrance essentials.
             </p>
             <Link href="/products" className={styles.heroCta} style={{ marginTop: "0.8rem" }}>
               SHOP NOW

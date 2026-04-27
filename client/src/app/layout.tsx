@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat } from "next/font/google";
+import { Suspense } from "react";
 import AppHeader from "@/components/layout/AppHeader";
 import "./globals.css";
 
@@ -27,7 +28,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
       <body>
-        <AppHeader />
+        <Suspense fallback={null}>
+          <AppHeader />
+        </Suspense>
         {children}
       </body>
     </html>

@@ -81,6 +81,11 @@
   border-bottom-color: var(--color-accent);
 }
 
+.activeNavLink {
+  border-bottom-color: var(--color-accent);
+  font-weight: 800;
+}
+
 .beautyGroup {
   position: relative;
   display: inline-flex;
@@ -116,6 +121,12 @@
 }
 
 .beautySubLink:hover {
+  background: #f8f8f8;
+}
+
+.activeBeautySubLink {
+  font-weight: 700;
+  color: var(--color-accent);
   background: #f8f8f8;
 }
 
@@ -194,5 +205,9 @@
   .beautySubLink:hover {
     background: transparent;
     color: var(--color-accent);
+  }
+
+  .activeBeautySubLink {
+    background: transparent;
   }
 }

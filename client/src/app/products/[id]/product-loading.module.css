@@ -1,0 +1,74 @@
+.page {
+  width: 100%;
+  padding: 0.8rem 1rem 2rem;
+}
+
+.shell {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: #fff;
+  padding: 1rem;
+}
+
+.title {
+  text-transform: uppercase;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+}
+
+.content {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.imageSkeleton,
+.lineWide,
+.lineMid,
+.lineShort {
+  background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 50%, #f3f4f6 100%);
+  background-size: 220% 100%;
+  animation: shimmer 1.2s linear infinite;
+  border-radius: 6px;
+}
+
+.imageSkeleton {
+  min-height: 300px;
+}
+
+.details {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+}
+
+.lineWide {
+  height: 16px;
+  width: 92%;
+}
+
+.lineMid {
+  height: 14px;
+  width: 72%;
+}
+
+.lineShort {
+  margin-top: 0.35rem;
+  height: 40px;
+  width: 45%;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 220% 0;
+  }
+  to {
+    background-position: -220% 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+}

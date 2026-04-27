@@ -1,10 +1,21 @@
+import styles from "./products-loading.module.css";
+
 export default function ProductsLoading() {
   return (
-    <main style={{ maxWidth: 1180, margin: "0 auto", padding: "1.5rem 1rem" }}>
-      <h1>Loading products...</h1>
-      <p style={{ marginTop: "0.5rem", color: "#6b7280" }}>
-        Please wait while we prepare the collection.
-      </p>
+    <main className={styles.page}>
+      <section className={styles.shell}>
+        <h1 className={styles.title}>Loading products...</h1>
+        <p className={styles.subtitle}>Please wait while we prepare the collection.</p>
+        <section className={styles.skeletonGrid}>
+          {Array.from({ length: 8 }).map((_, index) => (
+            <article key={index} className={styles.skeletonCard}>
+              <div className={styles.skeletonImage} />
+              <div className={styles.skeletonLineWide} />
+              <div className={styles.skeletonLine} />
+            </article>
+          ))}
+        </section>
+      </section>
     </main>
   );
 }

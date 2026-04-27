@@ -33,7 +33,7 @@ export default async function ShoesPage() {
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Shoes Favorites</h2>
+          <h2 className={styles.sectionTitle}>Featured Shoes</h2>
           <div className={styles.grid}>
             {visibleProducts.map((product) => (
               <article className={styles.item} key={product.id}>
@@ -42,7 +42,7 @@ export default async function ShoesPage() {
                     {product.imageUrl ? (
                       <img src={product.imageUrl} alt={product.name} className={styles.itemImageEl} />
                     ) : (
-                      "Image"
+                      "Image unavailable"
                     )}
                   </div>
                 </Link>
@@ -65,7 +65,7 @@ export default async function ShoesPage() {
 
         <section className={styles.banner}>
           <div className={styles.bannerText}>
-            <h3 className={styles.bannerTitle}>Trend Alert: Shoes</h3>
+            <h3 className={styles.bannerTitle}>Editor&apos;s Picks: Shoes</h3>
             <p style={{ marginTop: "0.5rem", color: "#555" }}>
               Explore our latest footwear picks and statement styles.
             </p>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   clearAuthSession,
@@ -53,6 +54,8 @@ function CartIcon() {
 }
 
 export default function AppHeader() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [count, setCount] = useState(0);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -128,14 +131,25 @@ export default function AppHeader() {
     return name !== "beauty" && !beautyChildNames.has(name);
   });
   const visibleCategories = topCategories.slice(0, 6);
+  const activeCategoryId = Number(searchParams.get("category"));
+  const isBeautyCategoryActive = beautyChildren.some((category) => category.id === activeCategoryId);
+  const isBeautyActive = pathname === "/beauty" || (pathname === "/products" && isBeautyCategoryActive);
 
   const closeMenu = (): void => {
     setIsMenuOpen(false);
   };
 
+  const categoryHref = (category: Category): string => {
+    const slug = category.name.toLowerCase();
+    if (["clothing", "bags", "shoes", "beauty", "accessories"].includes(slug)) {
+      return `/${slug}`;
+    }
+    return `/products?category=${category.id}`;
+  };
+
   return (
     <header className={styles.header}>
-      <div className={styles.topStrip}>women&apos;s fashion and beauty e-commerce</div>
+      <div className={styles.topStrip}>Premium women&apos;s fashion, beauty, and accessories</div>
       <div className={styles.inner}>
         <Link href="/" className={styles.brand}>
           Mintech Solution.
@@ -152,21 +166,34 @@ export default function AppHeader() {
           <span />
         </button>
         <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
-          <Link href="/new-arrivals" className={styles.navLink} onClick={closeMenu}>
+          <Link
+            href="/new-arrivals"
+            className={`${styles.navLink} ${pathname === "/new-arrivals" ? styles.activeNavLink : ""}`}
+            onClick={closeMenu}
+          >
             NEW ARRIVALS
           </Link>
           {visibleCategories.map((category) => (
             <Link
               key={category.id}
-              href={`/products?category=${category.id}`}
-              className={styles.navLink}
+              href={categoryHref(category)}
+              className={`${styles.navLink} ${
+                (pathname === "/products" && activeCategoryId === category.id) ||
+                pathname === `/${category.name.toLowerCase()}`
+                  ? styles.activeNavLink
+                  : ""
+              }`}
               onClick={closeMenu}
             >
               {category.name.toUpperCase()}
             </Link>
           ))}
           <div className={styles.beautyGroup}>
-            <Link href="/beauty" className={styles.navLink} onClick={closeMenu}>
+            <Link
+              href="/beauty"
+              className={`${styles.navLink} ${isBeautyActive ? styles.activeNavLink : ""}`}
+              onClick={closeMenu}
+            >
               BEAUTY
             </Link>
             {beautyChildren.length > 0 ? (
@@ -175,7 +202,11 @@ export default function AppHeader() {
                   <Link
                     key={category.id}
                     href={`/products?category=${category.id}`}
-                    className={styles.beautySubLink}
+                    className={`${styles.beautySubLink} ${
+                      pathname === "/products" && activeCategoryId === category.id
+                        ? styles.activeBeautySubLink
+                        : ""
+                    }`}
                     onClick={closeMenu}
                   >
                     {category.name.toUpperCase()}
@@ -184,7 +215,11 @@ export default function AppHeader() {
               </div>
             ) : null}
           </div>
-          <Link href="/sale" className={styles.navLink} onClick={closeMenu}>
+          <Link
+            href="/sale"
+            className={`${styles.navLink} ${pathname === "/sale" ? styles.activeNavLink : ""}`}
+            onClick={closeMenu}
+          >
             SALE
           </Link>
           <Link href="/products" className={styles.iconLink} aria-label="Search" onClick={closeMenu}>

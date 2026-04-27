@@ -16,7 +16,7 @@ export default function AddToCartButton({ productId }: AddToCartButtonProps) {
   async function onAdd(): Promise<void> {
     const token = getAuthToken();
     if (!token) {
-      setStatus("Please login to buy");
+      setStatus("Please sign in to continue");
       setTimeout(() => setStatus(null), 1800);
       return;
     }
@@ -29,9 +29,9 @@ export default function AddToCartButton({ productId }: AddToCartButtonProps) {
     } catch (error) {
       const rawMessage = error instanceof Error ? error.message : "Failed";
       if (rawMessage.toLowerCase().includes("missing authentication token")) {
-        setStatus("Please login to buy");
+        setStatus("Please sign in to continue");
       } else {
-        setStatus("Could not add item");
+        setStatus("Unable to add item");
       }
       setTimeout(() => setStatus(null), 2000);
     }
@@ -43,7 +43,7 @@ export default function AddToCartButton({ productId }: AddToCartButtonProps) {
       onClick={onAdd}
       className={`${styles.button} ${status === "Added to cart" ? styles.success : ""} ${isError ? styles.error : ""}`}
     >
-      {status ?? "Buy now"}
+      {status ?? "Add to Cart"}
     </button>
   );
 }

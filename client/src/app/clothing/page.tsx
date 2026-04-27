@@ -21,7 +21,7 @@ export default async function ClothingPage() {
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Clothing Favorites</h2>
+          <h2 className={styles.sectionTitle}>Featured Clothing</h2>
           <div className={styles.grid}>
             {featured.map((product) => (
               <article className={styles.item} key={product.id}>
@@ -29,7 +29,7 @@ export default async function ClothingPage() {
                   {product.imageUrl ? (
                     <img src={product.imageUrl} alt={product.name} className={styles.itemImageEl} />
                   ) : (
-                    "Image"
+                    "Image unavailable"
                   )}
                 </div>
                 <div className={styles.itemBody}>
@@ -46,7 +46,7 @@ export default async function ClothingPage() {
 
         <section className={styles.banner}>
           <div className={styles.bannerText}>
-            <h3 className={styles.bannerTitle}>Trend Alert: Dresses</h3>
+            <h3 className={styles.bannerTitle}>Editor&apos;s Picks: Dresses</h3>
             <p style={{ marginTop: "0.5rem", color: "#555" }}>
               Explore our new season essentials and statement pieces.
             </p>

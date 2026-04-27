@@ -13,10 +13,10 @@ export default async function Home() {
       <section className={styles.hero}>
         <div className={styles.heroImage} />
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>Embrace Your Elegance.</h1>
-          <p className={styles.heroSubtitle}>The Spring/Summer Collection is here.</p>
+          <h1 className={styles.heroTitle}>Elevate Your Signature Style.</h1>
+          <p className={styles.heroSubtitle}>Discover our latest spring and summer collection.</p>
           <Link href="/products" className={styles.cta}>
-            SHOP NEW
+            SHOP NEW ARRIVALS
           </Link>
         </div>
       </section>
@@ -66,7 +66,7 @@ export default async function Home() {
                   {product.imageUrl ? (
                     <img src={product.imageUrl} alt={product.name} className={styles.dealImageEl} />
                   ) : (
-                    "Image"
+                    "Image unavailable"
                   )}
                 </div>
                 <div className={styles.dealBody}>

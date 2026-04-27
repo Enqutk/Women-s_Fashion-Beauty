@@ -1,19 +1,21 @@
 import Link from "next/link";
 import AddToCartButton from "@/features/cart/components/AddToCartButton";
 import { fetchProducts } from "@/features/product/services/product.api";
-import styles from "./bags.module.css";
+import styles from "./accessories.module.css";
 
-export default async function BagsPage() {
+export default async function AccessoriesPage() {
   const products = await fetchProducts();
-  const bagProducts = products
+  const accessoryProducts = products
     .filter((product) => {
       const categoryName = (product.categoryName ?? "").toLowerCase();
       const productName = (product.name ?? "").toLowerCase();
       const productDescription = (product.description ?? "").toLowerCase();
       return (
-        categoryName.includes("bag") ||
-        productName.includes("bag") ||
-        productDescription.includes("bag")
+        categoryName.includes("accessor") ||
+        productName.includes("accessor") ||
+        productName.includes("earring") ||
+        productName.includes("sunglass") ||
+        productDescription.includes("accessor")
       );
     })
     .slice(0, 12);
@@ -24,19 +26,19 @@ export default async function BagsPage() {
         <section className={styles.hero}>
           <div className={styles.heroImage} />
           <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>Curated Bags</h1>
-            <p className={styles.heroText}>Discover our new season essentials and statement bags.</p>
+            <h1 className={styles.heroTitle}>Curated Accessories</h1>
+            <p className={styles.heroText}>Discover jewelry, sunglasses, and finishing touches.</p>
             <Link href="/products" className={styles.heroCta}>
-              SHOP ALL BAGS
+              SHOP ALL ACCESSORIES
             </Link>
           </div>
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Featured Bags</h2>
+          <h2 className={styles.sectionTitle}>Featured Accessories</h2>
           <div className={styles.grid}>
-            {bagProducts.length > 0 ? (
-              bagProducts.map((product) => (
+            {accessoryProducts.length > 0 ? (
+              accessoryProducts.map((product) => (
                 <article className={styles.item} key={product.id}>
                   <Link href={`/products/${product.id}`} className={styles.itemLink}>
                     <div className={styles.itemImage}>
@@ -63,7 +65,7 @@ export default async function BagsPage() {
               ))
             ) : (
               <p style={{ color: "#6b7280", padding: "0.4rem" }}>
-                Bag products are coming soon. Please check back shortly.
+                Accessories are currently being updated. Please check back shortly.
               </p>
             )}
           </div>
@@ -71,9 +73,9 @@ export default async function BagsPage() {
 
         <section className={styles.banner}>
           <div className={styles.bannerText}>
-            <h3 className={styles.bannerTitle}>Editor&apos;s Picks: Bags</h3>
+            <h3 className={styles.bannerTitle}>Editor&apos;s Picks: Accessories</h3>
             <p style={{ marginTop: "0.5rem", color: "#555" }}>
-              Explore our latest bag essentials and statement pieces.
+              Complete your look with elevated details and timeless accents.
             </p>
             <Link href="/products" className={styles.heroCta} style={{ marginTop: "0.8rem" }}>
               SHOP NOW
