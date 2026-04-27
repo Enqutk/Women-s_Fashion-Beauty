@@ -1,16 +1,19 @@
 import { z } from "zod";
 import type { CreateCategoryInput, UpdateCategoryInput } from "./category.model";
 
-const createCategorySchema = z.object({
-  name: z.string().trim().min(2).max(120),
-  description: z.string().trim().max(300).optional(),
-});
+const createCategorySchema = z
+  .object({
+    name: z.string().trim().min(2).max(120),
+    description: z.string().trim().max(300).optional(),
+  })
+  .strict();
 
 const updateCategorySchema = z
   .object({
     name: z.string().trim().min(2).max(120).optional(),
     description: z.string().trim().max(300).optional(),
   })
+  .strict()
   .refine((value) => value.name !== undefined || value.description !== undefined, {
     message: "Provide at least one field to update",
   });
