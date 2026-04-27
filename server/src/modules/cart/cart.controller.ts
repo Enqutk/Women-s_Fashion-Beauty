@@ -6,13 +6,10 @@ import {
   getCartByUserId,
 } from "./cart.service";
 import { validateAddCartItemInput, validateUpdateCartItemInput } from "./cart.validation";
-
-function getUserId(req: Request): number | null {
-  return req.authUser?.id ?? null;
-}
+import { getAuthUserId, parsePositiveIntParam } from "../../utils/request.utils";
 
 export async function getCartController(req: Request, res: Response): Promise<void> {
-  const userId = getUserId(req);
+  const userId = getAuthUserId(req);
   if (!userId) {
     res.status(401).json({ ok: false, message: "Unauthorized" });
     return;
@@ -24,7 +21,7 @@ export async function getCartController(req: Request, res: Response): Promise<vo
 
 export async function addCartItemController(req: Request, res: Response): Promise<void> {
   try {
-    const userId = getUserId(req);
+    const userId = getAuthUserId(req);
     if (!userId) {
       res.status(401).json({ ok: false, message: "Unauthorized" });
       return;
@@ -41,14 +38,14 @@ export async function addCartItemController(req: Request, res: Response): Promis
 
 export async function updateCartItemController(req: Request, res: Response): Promise<void> {
   try {
-    const userId = getUserId(req);
+    const userId = getAuthUserId(req);
     if (!userId) {
       res.status(401).json({ ok: false, message: "Unauthorized" });
       return;
     }
 
-    const productId = Number(req.params.productId);
-    if (!Number.isInteger(productId)) {
+    const productId = parsePositiveIntParam(req.params.productId);
+    if (!productId) {
       res.status(400).json({ ok: false, message: "Invalid product id" });
       return;
     }
@@ -65,14 +62,14 @@ export async function updateCartItemController(req: Request, res: Response): Pro
 
 export async function removeCartItemController(req: Request, res: Response): Promise<void> {
   try {
-    const userId = getUserId(req);
+    const userId = getAuthUserId(req);
     if (!userId) {
       res.status(401).json({ ok: false, message: "Unauthorized" });
       return;
     }
 
-    const productId = Number(req.params.productId);
-    if (!Number.isInteger(productId)) {
+    const productId = parsePositiveIntParam(req.params.productId);
+    if (!productId) {
       res.status(400).json({ ok: false, message: "Invalid product id" });
       return;
     }
