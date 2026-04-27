@@ -1,78 +1,87 @@
 import Link from "next/link";
-
-type HealthResponse = {
-  ok: boolean;
-  message: string;
-  serverTime?: string | null;
-  error?: string;
-};
-
-async function getBackendStatus(): Promise<HealthResponse> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
-
-  try {
-    const response = await fetch(`${apiUrl}/api/health`, {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      return {
-        ok: false,
-        message: "Request failed",
-        error: `HTTP ${response.status}`,
-      };
-    }
-
-    return (await response.json()) as HealthResponse;
-  } catch (error) {
-    return {
-      ok: false,
-      message: "Could not reach backend",
-      error: error instanceof Error ? error.message : "Unknown network error",
-    };
-  }
-}
+import { fetchCategories, fetchProducts } from "@/features/product/services/product.api";
+import styles from "./home.module.css";
 
 export default async function Home() {
-  const status = await getBackendStatus();
+  const categories = await fetchCategories();
+  const products = await fetchProducts();
+  const topCategories = categories.slice(0, 3);
+  const featuredDeals = products.slice(0, 8);
 
   return (
-    <main style={{ maxWidth: 900, margin: "0 auto", padding: "3rem 1.25rem" }}>
-      <h1>Women&apos;s Fashion & Beauty</h1>
-      <p>Sprint 0 setup check: frontend, backend, and PostgreSQL connectivity.</p>
-      <div style={{ marginTop: "0.8rem", display: "flex", gap: "1rem" }}>
-        <Link href="/products">Shop</Link>
-        <Link href="/login">Login</Link>
-        <Link href="/register">Register</Link>
-        <Link href="/admin/products">Admin Products</Link>
-      </div>
-
-      <section
-        style={{
-          marginTop: "1.5rem",
-          padding: "1rem",
-          border: "1px solid #ddd",
-          borderRadius: "0.5rem",
-        }}
-      >
-        <h2 style={{ marginTop: 0 }}>Backend status</h2>
-        <p>
-          <strong>Connected:</strong> {status.ok ? "Yes" : "No"}
-        </p>
-        <p>
-          <strong>Message:</strong> {status.message}
-        </p>
-        {status.serverTime ? (
-          <p>
-            <strong>Server time:</strong> {status.serverTime}
-          </p>
-        ) : null}
-        {status.error ? (
-          <p>
-            <strong>Error:</strong> {status.error}
-          </p>
-        ) : null}
+    <main className={styles.page}>
+      <section className={styles.hero}>
+        <div className={styles.heroImage} />
+        <div className={styles.heroContent}>
+          <h1 className={styles.heroTitle}>Embrace Your Elegance.</h1>
+          <p className={styles.heroSubtitle}>The Spring/Summer Collection is here.</p>
+          <Link href="/products" className={styles.cta}>
+            SHOP NEW
+          </Link>
+        </div>
       </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Shop by Category</h2>
+        <div className={styles.categoryGrid}>
+          {topCategories.map((category, index) => (
+            <Link
+              key={category.id}
+              href={`/products?category=${category.id}`}
+              className={`${styles.categoryCard} ${
+                index === 0 ? styles.bag : index === 1 ? styles.shoe : styles.perfume
+              }`}
+            >
+              {category.name} &gt;
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle} style={{ textAlign: "left", fontSize: "1.8rem" }}>
+            Today&apos;s Featured Deals
+          </h2>
+          <Link href="/products" className={styles.seeAll}>
+            See all deals →
+          </Link>
+        </div>
+
+        <div className={styles.pillRow}>
+          {["Skin Care", "Makeup", "Hair Care", "Fragrance", "Bags", "Shoes"].map((tag) => (
+            <span key={tag} className={styles.pill}>
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div className={styles.dealGrid}>
+          {featuredDeals.map((product) => {
+            const originalPrice = Number((product.price / 0.83).toFixed(2));
+            return (
+              <article className={styles.dealCard} key={product.id}>
+                <div className={styles.dealImage}>
+                  <span className={styles.discountTag}>-17%</span>
+                  {product.imageUrl ? (
+                    <img src={product.imageUrl} alt={product.name} className={styles.dealImageEl} />
+                  ) : (
+                    "Image"
+                  )}
+                </div>
+                <div className={styles.dealBody}>
+                  <p className={styles.dealName}>{product.name}</p>
+                  <div className={styles.dealPriceRow}>
+                    <span className={styles.dealPrice}>${product.price.toFixed(2)}</span>
+                    <span className={styles.dealOldPrice}>${originalPrice.toFixed(2)}</span>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
     </main>
   );
 }
