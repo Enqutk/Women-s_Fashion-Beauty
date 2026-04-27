@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import AdminShell from "@/components/layout/AdminShell";
 import type { Order } from "@/features/order/types";
 import { fetchAllOrdersAdmin, updateOrderStatusAdmin } from "@/features/order/services/order.api";
+import styles from "../admin.module.css";
 
 const statusOptions = ["pending", "completed", "cancelled"] as const;
 
@@ -41,17 +43,18 @@ export default function AdminOrdersPage() {
   }
 
   return (
-    <main style={{ maxWidth: 1000, margin: "0 auto", padding: "2rem 1rem" }}>
-      <h1>Admin Orders Dashboard</h1>
-      <p style={{ marginTop: "0.5rem", color: "#555" }}>View all orders and update order status.</p>
+    <AdminShell title="Orders Management">
+      <main className={styles.page}>
+      <h1 className={styles.title}>Orders Management</h1>
+      <p className={styles.muted}>View all orders and update order status.</p>
 
-      {loading ? <p style={{ marginTop: "1rem" }}>Loading orders...</p> : null}
-      {message ? <p style={{ marginTop: "1rem", color: "green" }}>{message}</p> : null}
-      {error ? <p style={{ marginTop: "1rem", color: "crimson" }}>{error}</p> : null}
+      {loading ? <p className={styles.alert}>Loading orders...</p> : null}
+      {message ? <p className={`${styles.alert} ${styles.ok}`}>{message}</p> : null}
+      {error ? <p className={`${styles.alert} ${styles.error}`}>{error}</p> : null}
 
-      <section style={{ marginTop: "1rem", display: "grid", gap: "0.9rem" }}>
+      <section className={styles.list}>
         {orders.map((order) => (
-          <article key={order.id} style={{ border: "1px solid #ddd", borderRadius: 8, padding: "0.9rem" }}>
+          <article key={order.id} className={styles.row}>
             <h2 style={{ fontSize: 18 }}>Order #{order.id}</h2>
             <p style={{ marginTop: "0.3rem" }}>
               User: {order.userId} | Total: ${order.total.toFixed(2)}
@@ -60,7 +63,7 @@ export default function AdminOrdersPage() {
               Created: {new Date(order.createdAt).toLocaleString()}
             </p>
 
-            <div style={{ marginTop: "0.5rem", display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <div className={styles.actions}>
               <span>Status:</span>
               {statusOptions.map((status) => (
                 <button
@@ -85,6 +88,7 @@ export default function AdminOrdersPage() {
           </article>
         ))}
       </section>
-    </main>
+      </main>
+    </AdminShell>
   );
 }
