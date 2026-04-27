@@ -29,6 +29,17 @@ export async function ensureCategoriesTable(): Promise<void> {
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
+
+  await pool.query(`
+    INSERT INTO categories (name, description)
+    VALUES
+      ('clothing', 'Women clothing and outfits'),
+      ('bags', 'Handbags, totes, and crossbody styles'),
+      ('shoes', 'Heels, flats, sneakers, and footwear'),
+      ('beauty', 'Beauty essentials and cosmetics'),
+      ('perfume', 'Fragrances and scented products')
+    ON CONFLICT (name) DO NOTHING;
+  `);
 }
 
 export async function createCategory(input: CreateCategoryInput): Promise<Category> {
