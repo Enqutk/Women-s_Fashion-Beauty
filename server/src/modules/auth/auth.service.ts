@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import type { SignOptions } from "jsonwebtoken";
 import { env } from "../../config/env";
 import { createUser, findUserByEmail } from "../user/user.repository";
 import { toPublicUser } from "../user/user.service";
@@ -12,8 +13,9 @@ type JwtClaims = {
 };
 
 function buildToken(claims: JwtClaims): string {
+  const expiresIn = env.jwtExpiresIn as SignOptions["expiresIn"];
   return jwt.sign(claims, env.jwtSecret, {
-    expiresIn: env.jwtExpiresIn,
+    expiresIn,
   });
 }
 
@@ -27,6 +29,7 @@ export async function register(input: RegisterInput): Promise<AuthPayload> {
   const user = await createUser({
     ...input,
     password: hashedPassword,
+    role: "user",
   });
 
   const token = buildToken({
