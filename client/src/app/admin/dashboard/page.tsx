@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import AdminShell from "@/components/layout/AdminShell";
 import { fetchDashboardAnalytics } from "@/features/analytics/services/analytics.api";
 import type { DashboardAnalytics } from "@/features/analytics/types";
+import styles from "../admin.module.css";
 
 const fallbackAnalytics: DashboardAnalytics = {
   totalUsers: 0,
@@ -42,58 +44,49 @@ export default function AdminDashboardPage() {
   );
 
   return (
-    <main style={{ maxWidth: 1100, margin: "0 auto", padding: "2rem 1rem" }}>
-      <h1>Admin Dashboard</h1>
-      <p style={{ marginTop: "0.45rem", color: "#555" }}>
+    <AdminShell title="Dashboard Overview">
+      <main className={styles.page}>
+      <h1 className={styles.title}>Dashboard Overview</h1>
+      <p className={styles.muted}>
         Overview of key platform metrics for users, orders, and products.
       </p>
 
-      {loading ? <p style={{ marginTop: "1rem" }}>Loading dashboard...</p> : null}
-      {error ? <p style={{ marginTop: "1rem", color: "crimson" }}>{error}</p> : null}
+      {loading ? <p className={styles.alert}>Loading dashboard...</p> : null}
+      {error ? <p className={`${styles.alert} ${styles.error}`}>{error}</p> : null}
 
-      <section
-        style={{
-          marginTop: "1rem",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "0.8rem",
-        }}
-      >
-        <article style={{ border: "1px solid #ddd", borderRadius: 10, padding: "1rem" }}>
-          <p style={{ color: "#666" }}>Total Users</p>
-          <p style={{ fontSize: 28, fontWeight: 700, marginTop: "0.3rem" }}>{analytics.totalUsers}</p>
+      <section className={styles.kpiGrid}>
+        <article className={styles.card}>
+          <p className={styles.muted}>Total Users</p>
+          <p style={{ fontSize: 28, fontWeight: 700 }}>{analytics.totalUsers}</p>
         </article>
 
-        <article style={{ border: "1px solid #ddd", borderRadius: 10, padding: "1rem" }}>
-          <p style={{ color: "#666" }}>Total Orders</p>
-          <p style={{ fontSize: 28, fontWeight: 700, marginTop: "0.3rem" }}>{analytics.totalOrders}</p>
+        <article className={styles.card}>
+          <p className={styles.muted}>Total Orders</p>
+          <p style={{ fontSize: 28, fontWeight: 700 }}>{analytics.totalOrders}</p>
         </article>
 
-        <article style={{ border: "1px solid #ddd", borderRadius: 10, padding: "1rem" }}>
-          <p style={{ color: "#666" }}>Total Products</p>
-          <p style={{ fontSize: 28, fontWeight: 700, marginTop: "0.3rem" }}>
-            {analytics.totalProducts}
-          </p>
+        <article className={styles.card}>
+          <p className={styles.muted}>Total Products</p>
+          <p style={{ fontSize: 28, fontWeight: 700 }}>{analytics.totalProducts}</p>
         </article>
       </section>
 
-      <section style={{ marginTop: "1rem", border: "1px solid #ddd", borderRadius: 10, padding: "1rem" }}>
+      <section className={`${styles.section} ${styles.card}`}>
         <h2 style={{ fontSize: 20 }}>Order Status Chart</h2>
-        <p style={{ marginTop: "0.3rem", color: "#666" }}>
+        <p className={styles.muted}>
           Simple status distribution to track fulfillment progress.
         </p>
-        <div style={{ marginTop: "0.8rem", display: "grid", gap: "0.55rem" }}>
+        <div className={styles.list}>
           {analytics.orderStatusBreakdown.map((entry) => {
             const width = `${Math.max((entry.count / maxStatusCount) * 100, entry.count > 0 ? 8 : 0)}%`;
             return (
-              <div key={entry.status} style={{ display: "grid", gridTemplateColumns: "130px 1fr 70px", gap: "0.6rem", alignItems: "center" }}>
+              <div key={entry.status} className={styles.chartRow}>
                 <span style={{ textTransform: "capitalize" }}>{entry.status}</span>
-                <div style={{ background: "#efefef", height: 12, borderRadius: 999 }}>
+                <div className={styles.barTrack}>
                   <div
+                    className={styles.bar}
                     style={{
                       width,
-                      height: "100%",
-                      borderRadius: 999,
                       background:
                         entry.status === "completed"
                           ? "#22c55e"
@@ -109,6 +102,7 @@ export default function AdminDashboardPage() {
           })}
         </div>
       </section>
-    </main>
+      </main>
+    </AdminShell>
   );
 }
