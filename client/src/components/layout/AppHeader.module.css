@@ -81,6 +81,44 @@
   border-bottom-color: var(--color-accent);
 }
 
+.beautyGroup {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.beautySubmenu {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  min-width: 170px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  padding: 0.4rem;
+  display: none;
+  flex-direction: column;
+  gap: 0.2rem;
+  z-index: 25;
+}
+
+.beautyGroup:hover .beautySubmenu,
+.beautyGroup:focus-within .beautySubmenu {
+  display: flex;
+}
+
+.beautySubLink {
+  color: var(--color-primary);
+  font-size: 0.82rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 7px;
+}
+
+.beautySubLink:hover {
+  background: #f8f8f8;
+}
+
 .iconLink {
   color: var(--color-primary);
   display: inline-flex;
@@ -130,9 +168,31 @@
 
   .navLink,
   .iconLink,
-  .iconTextLink {
+  .iconTextLink,
+  .beautyGroup {
     width: 100%;
     justify-content: flex-start;
     padding: 0.2rem 0;
+  }
+
+  .beautySubmenu {
+    position: static;
+    display: flex;
+    box-shadow: none;
+    border: 0;
+    background: transparent;
+    padding: 0.15rem 0 0.2rem 0.7rem;
+    min-width: 0;
+  }
+
+  .beautySubLink {
+    padding: 0.2rem 0;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+  }
+
+  .beautySubLink:hover {
+    background: transparent;
+    color: var(--color-accent);
   }
 }

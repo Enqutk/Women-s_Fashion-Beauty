@@ -119,8 +119,15 @@ export default function AppHeader() {
     return () => window.removeEventListener("cart:changed", loadCount);
   }, []);
 
-  const visibleCategories = categories.slice(0, 8);
-  const hasCategories = visibleCategories.length > 0;
+  const beautyChildNames = new Set(["skincare", "perfume", "makeup"]);
+  const beautyChildren = categories.filter((category) =>
+    beautyChildNames.has(category.name.toLowerCase()),
+  );
+  const topCategories = categories.filter((category) => {
+    const name = category.name.toLowerCase();
+    return name !== "beauty" && !beautyChildNames.has(name);
+  });
+  const visibleCategories = topCategories.slice(0, 6);
 
   const closeMenu = (): void => {
     setIsMenuOpen(false);
@@ -148,18 +155,35 @@ export default function AppHeader() {
           <Link href="/new-arrivals" className={styles.navLink} onClick={closeMenu}>
             NEW ARRIVALS
           </Link>
-          {hasCategories
-            ? visibleCategories.map((category) => (
-                <Link
-                  key={category.id}
-                  href={`/products?category=${category.id}`}
-                  className={styles.navLink}
-                  onClick={closeMenu}
-                >
-                  {category.name.toUpperCase()}
-                </Link>
-              ))
-            : null}
+          {visibleCategories.map((category) => (
+            <Link
+              key={category.id}
+              href={`/products?category=${category.id}`}
+              className={styles.navLink}
+              onClick={closeMenu}
+            >
+              {category.name.toUpperCase()}
+            </Link>
+          ))}
+          <div className={styles.beautyGroup}>
+            <Link href="/beauty" className={styles.navLink} onClick={closeMenu}>
+              BEAUTY
+            </Link>
+            {beautyChildren.length > 0 ? (
+              <div className={styles.beautySubmenu}>
+                {beautyChildren.map((category) => (
+                  <Link
+                    key={category.id}
+                    href={`/products?category=${category.id}`}
+                    className={styles.beautySubLink}
+                    onClick={closeMenu}
+                  >
+                    {category.name.toUpperCase()}
+                  </Link>
+                ))}
+              </div>
+            ) : null}
+          </div>
           <Link href="/sale" className={styles.navLink} onClick={closeMenu}>
             SALE
           </Link>
