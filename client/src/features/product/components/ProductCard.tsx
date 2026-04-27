@@ -14,7 +14,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {product.imageUrl ? (
           <img src={product.imageUrl} alt={product.name} className={styles.image} />
         ) : (
-          "No image"
+          "Image unavailable"
         )}
       </div>
 
@@ -23,7 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <h3 className={styles.name}>{product.name}</h3>
         <p className={styles.price}>${product.price.toFixed(2)}</p>
         <p className={styles.desc}>
-          {product.description ? product.description.slice(0, 80) : "No description"}
+          {product.description ? product.description.slice(0, 80) : "Product details coming soon."}
         </p>
         <div className={styles.actions}>
           <Link href={`/products/${product.id}`} className={styles.viewLink}>
