@@ -1,89 +1,169 @@
 .header {
   position: sticky;
   top: 0;
-  z-index: 20;
-  background: #fff;
-  border-bottom: 1px solid var(--color-border);
+  z-index: 30;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .topStrip {
-  background: #111;
-  color: #fff;
+  background: #0f1111;
+  color: #d1d5db;
   text-align: center;
-  font-size: 0.72rem;
-  padding: 0.24rem 0.5rem;
-  letter-spacing: 0.04em;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+  font-size: 0.68rem;
+  padding: 0.2rem 0.5rem;
+  letter-spacing: 0.03em;
 }
 
-.inner {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  display: flex;
+.mainBar {
+  background: #131921;
+  color: #fff;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
+  padding: 0.55rem 0.8rem;
 }
 
 .brand {
+  color: #f5f5f5;
   font-family: var(--font-montserrat), Arial, sans-serif;
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 1.08rem;
+  white-space: nowrap;
+}
+
+.searchForm {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.searchScope {
+  border: 0;
+  border-right: 1px solid #e5e7eb;
+  background: #f3f4f6;
+  color: #111827;
+  font-size: 0.8rem;
+  padding: 0.55rem 0.5rem;
+  width: 74px;
+}
+
+.searchInput {
+  border: 0;
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  font-size: 0.9rem;
+}
+
+.searchInput:focus {
+  outline: 2px solid #f59e0b;
+  outline-offset: -2px;
+}
+
+.searchBtn {
+  border: 0;
+  border-left: 1px solid #d1d5db;
+  background: #f59e0b;
+  color: #111827;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 100%;
+  border-radius: 0;
+}
+
+.quickActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.quickLink,
+.quickText {
+  color: #f3f4f6;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.quickText {
+  font-weight: 600;
+}
+
+.cartCount {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.inner {
+  background: #232f3e;
+  color: #fff;
+  padding: 0.5rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
 }
 
 .hamburger {
   display: none;
-  border: 1px solid var(--color-border);
-  background: #fff;
-  border-radius: 10px;
-  padding: 0.42rem;
-  width: 42px;
-  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  border-radius: 8px;
+  padding: 0.4rem;
+  width: 40px;
+  height: 34px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .hamburger span {
   display: block;
-  width: 18px;
+  width: 16px;
   height: 2px;
   border-radius: 999px;
-  background: var(--color-primary);
+  background: #fff;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.95rem;
   flex-wrap: wrap;
-  font-size: 0.92rem;
+  font-size: 0.83rem;
 }
 
 .navLink {
-  color: var(--color-primary);
+  color: #f9fafb;
   border-bottom: 2px solid transparent;
-  padding-bottom: 2px;
   background: transparent;
   border-left: 0;
   border-right: 0;
   border-top: 0;
   font: inherit;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   cursor: pointer;
+  padding-bottom: 2px;
 }
 
 .navLink:hover {
-  border-bottom-color: var(--color-accent);
+  border-bottom-color: #f59e0b;
 }
 
 .activeNavLink {
-  border-bottom-color: var(--color-accent);
-  font-weight: 800;
+  border-bottom-color: #f59e0b;
+  color: #fff;
 }
 
 .beautyGroup {
@@ -94,18 +174,18 @@
 
 .beautySubmenu {
   position: absolute;
-  top: calc(100% + 0.35rem);
+  top: calc(100% + 0.45rem);
   left: 0;
-  min-width: 170px;
+  min-width: 180px;
   background: #fff;
-  border: 1px solid var(--color-border);
+  border: 1px solid #e5e7eb;
   border-radius: 10px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-  padding: 0.4rem;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
+  padding: 0.45rem;
   display: none;
   flex-direction: column;
   gap: 0.2rem;
-  z-index: 25;
+  z-index: 40;
 }
 
 .beautyGroup:hover .beautySubmenu,
@@ -114,41 +194,31 @@
 }
 
 .beautySubLink {
-  color: var(--color-primary);
-  font-size: 0.82rem;
-  padding: 0.4rem 0.5rem;
-  border-radius: 7px;
+  color: #111827;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.38rem 0.5rem;
+  border-radius: 6px;
 }
 
 .beautySubLink:hover {
-  background: #f8f8f8;
+  background: #f3f4f6;
 }
 
 .activeBeautySubLink {
-  font-weight: 700;
-  color: var(--color-accent);
-  background: #f8f8f8;
+  color: #b45309;
+  background: #fef3c7;
 }
 
-.iconLink {
-  color: var(--color-primary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-}
+@media (max-width: 1020px) {
+  .mainBar {
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+  }
 
-.iconTextLink {
-  color: var(--color-primary);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.28rem;
-  font-size: 0.92rem;
-}
-
-.cartCount {
-  color: var(--color-accent);
-  font-weight: 700;
+  .quickActions {
+    justify-content: flex-end;
+  }
 }
 
 @media (max-width: 900px) {
@@ -165,12 +235,12 @@
   .nav {
     width: 100%;
     display: none;
-    margin-top: 0.45rem;
-    padding-top: 0.4rem;
-    border-top: 1px solid var(--color-border);
+    margin-top: 0.25rem;
+    padding-top: 0.45rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.65rem;
+    gap: 0.62rem;
   }
 
   .navOpen {
@@ -178,8 +248,6 @@
   }
 
   .navLink,
-  .iconLink,
-  .iconTextLink,
   .beautyGroup {
     width: 100%;
     justify-content: flex-start;
@@ -192,22 +260,32 @@
     box-shadow: none;
     border: 0;
     background: transparent;
-    padding: 0.15rem 0 0.2rem 0.7rem;
+    padding: 0.15rem 0 0.2rem 0.72rem;
     min-width: 0;
   }
 
   .beautySubLink {
+    color: #e5e7eb;
     padding: 0.2rem 0;
-    font-size: 0.8rem;
-    color: var(--color-muted);
   }
 
-  .beautySubLink:hover {
-    background: transparent;
-    color: var(--color-accent);
-  }
-
+  .beautySubLink:hover,
   .activeBeautySubLink {
     background: transparent;
+    color: #fbbf24;
+  }
+}
+
+@media (max-width: 640px) {
+  .searchScope {
+    display: none;
+  }
+
+  .searchForm {
+    grid-template-columns: 1fr auto;
+  }
+
+  .brand {
+    font-size: 0.98rem;
   }
 }
