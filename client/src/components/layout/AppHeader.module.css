@@ -35,6 +35,28 @@
   font-size: 1rem;
 }
 
+.hamburger {
+  display: none;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.42rem;
+  width: 42px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--color-primary);
+}
+
 .nav {
   display: flex;
   align-items: center;
@@ -82,7 +104,35 @@
 
 @media (max-width: 900px) {
   .inner {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hamburger {
+    display: inline-flex;
+  }
+
+  .nav {
+    width: 100%;
+    display: none;
+    margin-top: 0.45rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--color-border);
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.65rem;
+  }
+
+  .navOpen {
+    display: flex;
+  }
+
+  .navLink,
+  .iconLink,
+  .iconTextLink {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0.2rem 0;
   }
 }
