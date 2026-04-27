@@ -1,0 +1,147 @@
+.page {
+  width: 100%;
+  padding: 0.9rem 1rem 2rem;
+}
+
+.title {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: clamp(2rem, 4vw, 2.7rem);
+}
+
+.subtitle {
+  margin-top: 0.45rem;
+  text-align: center;
+  color: #5a5a5a;
+}
+
+.state {
+  margin-top: 0.9rem;
+  text-align: center;
+}
+
+.success {
+  margin-top: 0.9rem;
+  text-align: center;
+  color: #166534;
+}
+
+.error {
+  margin-top: 0.9rem;
+  text-align: center;
+  color: #b91c1c;
+}
+
+.empty {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.browseLink {
+  margin-top: 0.55rem;
+  display: inline-block;
+  color: #111;
+  font-weight: 700;
+}
+
+.layout {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.itemsWrap {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.itemsHeader {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid #ececec;
+  background: #fafafa;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.item {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.itemName {
+  font-weight: 700;
+}
+
+.itemMeta {
+  color: #555;
+}
+
+.itemTotal {
+  font-weight: 800;
+}
+
+.summary {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 0.85rem;
+  background: #fff;
+}
+
+.summaryTitle {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+}
+
+.row {
+  margin-top: 0.55rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.label {
+  color: #444;
+}
+
+.value {
+  font-weight: 700;
+}
+
+.total {
+  margin-top: 0.7rem;
+  border-top: 1px solid #ececec;
+  padding-top: 0.55rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.18rem;
+  font-weight: 900;
+}
+
+.placeOrderBtn {
+  margin-top: 0.8rem;
+  width: 100%;
+  background: #111;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0.75rem 0.9rem;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.secondaryLink {
+  margin-top: 0.55rem;
+  display: inline-block;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
