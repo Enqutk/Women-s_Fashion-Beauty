@@ -6,6 +6,7 @@ export type Product = {
   imageUrl: string | null;
   categoryId: number;
   categoryName: string | null;
+  isOnSale: boolean;
   createdAt: string;
   updatedAt: string;
 };
@@ -16,6 +17,7 @@ export type CreateProductInput = {
   price: number;
   imageUrl?: string;
   categoryId: number;
+  isOnSale?: boolean;
 };
 
 export type UpdateProductInput = {
@@ -24,4 +26,5 @@ export type UpdateProductInput = {
   price?: number;
   imageUrl?: string;
   categoryId?: number;
+  isOnSale?: boolean;
 };
