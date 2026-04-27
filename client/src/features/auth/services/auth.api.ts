@@ -23,7 +23,6 @@ export function registerUser(input: {
   name: string;
   email: string;
   password: string;
-  role: "admin" | "user";
 }): Promise<AuthResponse> {
   return request<AuthResponse>("/api/auth/register", input);
 }
