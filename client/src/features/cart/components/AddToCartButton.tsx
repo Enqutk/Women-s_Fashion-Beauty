@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { getAuthToken } from "@/features/auth/utils/auth-storage";
 import { addToCart } from "../services/cart.api";
+import styles from "./AddToCartButton.module.css";
 
 type AddToCartButtonProps = {
   productId: number;
@@ -9,22 +11,39 @@ type AddToCartButtonProps = {
 
 export default function AddToCartButton({ productId }: AddToCartButtonProps) {
   const [status, setStatus] = useState<string | null>(null);
+  const isError = status !== null && status !== "Added to cart";
 
   async function onAdd(): Promise<void> {
+    const token = getAuthToken();
+    if (!token) {
+      setStatus("Please login to buy");
+      setTimeout(() => setStatus(null), 1800);
+      return;
+    }
+
     try {
       await addToCart(productId, 1);
-      setStatus("Added");
+      setStatus("Added to cart");
       window.dispatchEvent(new Event("cart:changed"));
       setTimeout(() => setStatus(null), 1400);
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Failed");
+      const rawMessage = error instanceof Error ? error.message : "Failed";
+      if (rawMessage.toLowerCase().includes("missing authentication token")) {
+        setStatus("Please login to buy");
+      } else {
+        setStatus("Could not add item");
+      }
       setTimeout(() => setStatus(null), 2000);
     }
   }
 
   return (
-    <button type="button" onClick={onAdd}>
-      {status ?? "Add to cart"}
+    <button
+      type="button"
+      onClick={onAdd}
+      className={`${styles.button} ${status === "Added to cart" ? styles.success : ""} ${isError ? styles.error : ""}`}
+    >
+      {status ?? "Buy now"}
     </button>
   );
 }
