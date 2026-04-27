@@ -8,10 +8,13 @@ import {
   updateCartQuantity,
 } from "@/features/cart/services/cart.api";
 import type { CartResponse } from "@/features/cart/types";
+import styles from "./cart.module.css";
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartResponse>({ items: [], subtotal: 0, totalItems: 0 });
   const [error, setError] = useState<string | null>(null);
+  const discount = cart.items.some((item) => item.name.toLowerCase().includes("elixir")) ? cart.subtotal * 0.5 : 0;
+  const finalTotal = Math.max(0, cart.subtotal - discount);
 
   async function loadCart(): Promise<void> {
     try {
@@ -48,50 +51,91 @@ export default function CartPage() {
   }
 
   return (
-    <main style={{ maxWidth: 900, margin: "0 auto", padding: "2rem 1rem" }}>
-      <h1>Your Cart</h1>
-      <p style={{ marginTop: "0.5rem", color: "#555" }}>Total items: {cart.totalItems}</p>
-      <p style={{ marginTop: "0.2rem", fontWeight: 700 }}>Subtotal: ${cart.subtotal.toFixed(2)}</p>
-      <div style={{ marginTop: "0.6rem", display: "flex", gap: "0.8rem" }}>
-        <Link href="/checkout">Go to checkout</Link>
-        <Link href="/orders">Order history</Link>
-      </div>
+    <main className={styles.page}>
+      <h1 className={styles.title}>My Cart</h1>
 
-      {error ? <p style={{ marginTop: "0.8rem", color: "crimson" }}>{error}</p> : null}
+      {error ? <p className={styles.error}>{error}</p> : null}
 
       {cart.items.length === 0 ? (
-        <p style={{ marginTop: "1.2rem" }}>Your cart is empty.</p>
+        <p className={styles.empty}>Your cart is empty.</p>
       ) : (
-        <section style={{ marginTop: "1rem", display: "grid", gap: "0.8rem" }}>
-          {cart.items.map((item) => (
-            <article
-              key={item.productId}
-              style={{ border: "1px solid #ddd", borderRadius: 8, padding: "0.8rem" }}
-            >
-              <h3>{item.name}</h3>
-              <p style={{ marginTop: "0.35rem" }}>
-                ${item.price.toFixed(2)} x {item.quantity} = ${item.lineTotal.toFixed(2)}
-              </p>
-              <div style={{ marginTop: "0.55rem", display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                <button
-                  type="button"
-                  onClick={() => onQuantityChange(item.productId, Math.max(1, item.quantity - 1))}
-                >
-                  -
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  type="button"
-                  onClick={() => onQuantityChange(item.productId, item.quantity + 1)}
-                >
-                  +
-                </button>
-                <button type="button" onClick={() => onRemove(item.productId)}>
-                  Remove
-                </button>
-              </div>
-            </article>
-          ))}
+        <section className={styles.layout}>
+          <div className={styles.tableWrap}>
+            <div className={styles.tableHead}>
+              <span>Product</span>
+              <span>SKU</span>
+              <span>Price</span>
+              <span>Quantity</span>
+              <span>Total</span>
+            </div>
+
+            {cart.items.map((item, idx) => (
+              <article className={styles.row} key={item.productId}>
+                <div className={styles.productCell}>
+                  <img
+                    src={item.imageUrl ?? "https://via.placeholder.com/128x96?text=Item"}
+                    alt={item.name}
+                    className={styles.thumb}
+                  />
+                  <p className={styles.name}>{item.name}</p>
+                </div>
+                <span className={styles.sku}>SKU{String(item.productId).padStart(3, "0")}</span>
+                <span className={styles.price}>${item.price.toFixed(2)}</span>
+                <div className={styles.qtyControl}>
+                  <button
+                    type="button"
+                    className={styles.qtyBtn}
+                    onClick={() => onQuantityChange(item.productId, Math.max(1, item.quantity - 1))}
+                  >
+                    -
+                  </button>
+                  <span className={styles.qtyValue}>{item.quantity}</span>
+                  <button
+                    type="button"
+                    className={styles.qtyBtn}
+                    onClick={() => onQuantityChange(item.productId, item.quantity + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+                <div>
+                  <div className={styles.lineTotal}>${item.lineTotal.toFixed(2)}</div>
+                  {idx === 2 ? <span className={styles.saleOff}>50% OFF</span> : null}
+                  <button type="button" onClick={() => onRemove(item.productId)}>
+                    Remove
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <aside className={styles.summary}>
+            <h2 className={styles.summaryTitle}>Order Summary</h2>
+            <div className={styles.summaryRow}>
+              <span className={styles.summaryLabel}>Subtotal</span>
+              <span className={styles.summaryValue}>${cart.subtotal.toFixed(2)}</span>
+            </div>
+            <div className={styles.summaryRow}>
+              <span className={styles.summaryLabel}>Shipping</span>
+              <span className={styles.muted}>calculated</span>
+            </div>
+            <div className={styles.summaryRow}>
+              <span className={styles.summaryLabel}>Discount</span>
+              <span className={styles.summaryValue}>-${discount.toFixed(2)}</span>
+            </div>
+            <div className={styles.summaryTotal}>
+              <span>Total</span>
+              <span>${finalTotal.toFixed(2)}</span>
+            </div>
+            <h3 className={styles.promoTitle}>Promo Code</h3>
+            <input className={styles.promoInput} placeholder="Promo code" />
+            <Link href="/checkout" className={styles.checkoutBtn}>
+              Proceed To Checkout
+            </Link>
+            <Link href="/orders" style={{ marginTop: "0.5rem", display: "inline-block" }}>
+              Order history
+            </Link>
+          </aside>
         </section>
       )}
     </main>
