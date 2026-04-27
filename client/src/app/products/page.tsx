@@ -6,19 +6,42 @@ import styles from "./products.module.css";
 type ProductsPageProps = {
   searchParams?: Promise<{
     category?: string;
+    q?: string;
   }>;
 };
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = searchParams ? await searchParams : undefined;
   const selectedCategoryId = params?.category ? Number(params.category) : null;
+  const rawQuery = params?.q?.trim() ?? "";
+  const searchQuery = rawQuery.toLowerCase();
 
   const [categories, products] = await Promise.all([fetchCategories(), fetchProducts()]);
+  const hasCanonicalShoes = categories.some((category) => category.name.toLowerCase() === "shoes");
+  const visibleCategories = categories.filter((category) => {
+    if (hasCanonicalShoes && category.name.toLowerCase() === "shoe") {
+      return false;
+    }
+    return true;
+  });
 
-  const filteredProducts =
-    selectedCategoryId && Number.isInteger(selectedCategoryId)
-      ? products.filter((product) => product.categoryId === selectedCategoryId)
-      : products;
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory =
+      selectedCategoryId && Number.isInteger(selectedCategoryId)
+        ? product.categoryId === selectedCategoryId
+        : true;
+    if (!matchesCategory) {
+      return false;
+    }
+    if (!searchQuery) {
+      return true;
+    }
+    return (
+      product.name.toLowerCase().includes(searchQuery) ||
+      (product.description ?? "").toLowerCase().includes(searchQuery) ||
+      (product.categoryName ?? "").toLowerCase().includes(searchQuery)
+    );
+  });
 
   return (
     <main className={styles.page}>
@@ -42,7 +65,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             >
               All
             </Link>
-            {categories.map((category) => {
+            {visibleCategories.map((category) => {
               const isActive = selectedCategoryId === category.id;
               return (
                 <Link
