@@ -1,0 +1,130 @@
+.page {
+  padding: 0.2rem 0 0.6rem;
+}
+
+.title {
+  font-size: 2rem;
+}
+
+.muted {
+  margin-top: 0.45rem;
+  color: var(--color-muted);
+}
+
+.alert {
+  margin-top: 0.9rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+}
+
+.ok {
+  color: #0f766e;
+}
+
+.error {
+  color: #b91c1c;
+}
+
+.kpiGrid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.list {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.row {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.85rem;
+  background: #fff;
+}
+
+.formGrid {
+  margin-top: 0.7rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.section {
+  margin-top: 1rem;
+}
+
+.sectionHeading {
+  margin-bottom: 0.8rem;
+  font-size: 1.15rem;
+}
+
+.narrowButton {
+  width: 180px;
+}
+
+.saleToggle {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.saleToggle input {
+  margin-top: 0.15rem;
+}
+
+.saleToggle strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.formHint {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.chartRow {
+  display: grid;
+  grid-template-columns: 120px 1fr 50px;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.barTrack {
+  background: #efefef;
+  height: 12px;
+  border-radius: 999px;
+}
+
+.bar {
+  height: 100%;
+  border-radius: 999px;
+}
+
+@media (max-width: 920px) {
+  .kpiGrid {
+    grid-template-columns: 1fr;
+  }
+}
