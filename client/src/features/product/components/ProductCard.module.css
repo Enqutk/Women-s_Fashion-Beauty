@@ -1,0 +1,69 @@
+.card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.imageWrap {
+  height: 210px;
+  background: #f7f3f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.body {
+  padding: 0.95rem;
+}
+
+.category {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.name {
+  margin-top: 0.3rem;
+  font-size: 1.05rem;
+}
+
+.price {
+  margin-top: 0.4rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.desc {
+  margin-top: 0.45rem;
+  color: #4b5563;
+  min-height: 40px;
+  font-size: 0.9rem;
+}
+
+.actions {
+  margin-top: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.viewLink {
+  color: var(--color-accent);
+  font-weight: 600;
+}
