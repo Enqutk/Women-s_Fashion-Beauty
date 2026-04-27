@@ -1,6 +1,9 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import AdminShell from "@/components/layout/AdminShell";
+import { getAuthToken } from "@/features/auth/utils/auth-storage";
+import styles from "../admin.module.css";
 
 type Category = {
   id: number;
@@ -16,13 +19,13 @@ type Product = {
   imageUrl: string | null;
   categoryId: number;
   categoryName: string | null;
+  isOnSale: boolean;
 };
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
-const TOKEN_KEY = "auth_token";
 
 function authHeaders(): HeadersInit {
-  const token = localStorage.getItem(TOKEN_KEY);
+  const token = getAuthToken();
   return {
     "Content-Type": "application/json",
     Authorization: token ? `Bearer ${token}` : "",
@@ -43,12 +46,17 @@ export default function AdminProductsPage() {
   const [productPrice, setProductPrice] = useState("");
   const [productImageUrl, setProductImageUrl] = useState("");
   const [productCategoryId, setProductCategoryId] = useState<number | "">("");
+  const [productIsOnSale, setProductIsOnSale] = useState(false);
 
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
 
   const selectedCategoryExists = useMemo(
     () => categories.some((category) => category.id === productCategoryId),
     [categories, productCategoryId],
+  );
+  const sortedCategories = useMemo(
+    () => [...categories].sort((a, b) => a.name.localeCompare(b.name)),
+    [categories],
   );
 
   async function loadData(): Promise<void> {
@@ -118,6 +126,7 @@ export default function AdminProductsPage() {
       price: Number(productPrice),
       imageUrl: productImageUrl || undefined,
       categoryId: productCategoryId,
+      isOnSale: productIsOnSale,
     };
 
     const isEditing = editingProductId !== null;
@@ -143,6 +152,7 @@ export default function AdminProductsPage() {
     setProductPrice("");
     setProductImageUrl("");
     setProductCategoryId("");
+    setProductIsOnSale(false);
     setEditingProductId(null);
     await loadData();
     setStatus(isEditing ? "Product updated" : "Product created");
@@ -174,57 +184,58 @@ export default function AdminProductsPage() {
     setProductPrice(String(product.price));
     setProductImageUrl(product.imageUrl ?? "");
     setProductCategoryId(product.categoryId);
+    setProductIsOnSale(product.isOnSale);
     setStatus("Editing selected product");
     setError(null);
   }
 
   return (
-    <main style={{ maxWidth: 1000, margin: "0 auto", padding: "2rem 1rem" }}>
-      <h1>Admin Product Management</h1>
-      <p>Use an admin account token in localStorage to create, update, and delete products.</p>
+    <AdminShell title="Products Management">
+      <main className={styles.page}>
+      <h1 className={styles.title}>Products Management</h1>
+      <p className={styles.muted}>
+        Manage your catalog with clear categories and optional sale tagging.
+      </p>
 
-      {status ? <p style={{ color: "green", marginTop: "0.75rem" }}>{status}</p> : null}
-      {error ? <p style={{ color: "crimson", marginTop: "0.75rem" }}>{error}</p> : null}
+      {status ? <p className={`${styles.alert} ${styles.ok}`}>{status}</p> : null}
+      {error ? <p className={`${styles.alert} ${styles.error}`}>{error}</p> : null}
 
-      <section style={{ marginTop: "1.2rem", border: "1px solid #ddd", padding: "1rem" }}>
-        <h2 style={{ marginBottom: "0.8rem" }}>Add category</h2>
-        <form onSubmit={onCreateCategory} style={{ display: "grid", gap: "0.6rem" }}>
+      <section className={`${styles.section} ${styles.card}`}>
+        <h2 className={styles.sectionHeading}>Add category</h2>
+        <form onSubmit={onCreateCategory} className={styles.formGrid}>
           <input
             required
             placeholder="Category name"
             value={categoryName}
             onChange={(event) => setCategoryName(event.target.value)}
-            style={{ padding: "0.55rem" }}
           />
           <input
             placeholder="Category description (optional)"
             value={categoryDescription}
             onChange={(event) => setCategoryDescription(event.target.value)}
-            style={{ padding: "0.55rem" }}
           />
-          <button type="submit" style={{ padding: "0.55rem", width: 180 }}>
+          <button type="submit" className={styles.narrowButton}>
             Create category
           </button>
         </form>
       </section>
 
-      <section style={{ marginTop: "1.2rem", border: "1px solid #ddd", padding: "1rem" }}>
-        <h2 style={{ marginBottom: "0.8rem" }}>
+      <section className={`${styles.section} ${styles.card}`}>
+        <h2 className={styles.sectionHeading}>
           {editingProductId ? "Edit product" : "Add product"}
         </h2>
-        <form onSubmit={onCreateOrUpdateProduct} style={{ display: "grid", gap: "0.6rem" }}>
+        <form onSubmit={onCreateOrUpdateProduct} className={styles.formGrid}>
           <input
             required
             placeholder="Product name"
             value={productName}
             onChange={(event) => setProductName(event.target.value)}
-            style={{ padding: "0.55rem" }}
           />
           <textarea
             placeholder="Description"
             value={productDescription}
             onChange={(event) => setProductDescription(event.target.value)}
-            style={{ padding: "0.55rem", minHeight: 80 }}
+            style={{ minHeight: 80 }}
           />
           <input
             required
@@ -234,13 +245,11 @@ export default function AdminProductsPage() {
             placeholder="Price"
             value={productPrice}
             onChange={(event) => setProductPrice(event.target.value)}
-            style={{ padding: "0.55rem" }}
           />
           <input
             placeholder="Image URL (optional)"
             value={productImageUrl}
             onChange={(event) => setProductImageUrl(event.target.value)}
-            style={{ padding: "0.55rem" }}
           />
           <select
             required
@@ -248,24 +257,33 @@ export default function AdminProductsPage() {
             onChange={(event) =>
               setProductCategoryId(event.target.value ? Number(event.target.value) : "")
             }
-            style={{ padding: "0.55rem" }}
           >
             <option value="">Select category</option>
-            {categories.map((category) => (
+            {sortedCategories.map((category) => (
               <option key={category.id} value={category.id}>
-                {category.name}
+                {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
               </option>
             ))}
           </select>
+          <label className={styles.saleToggle}>
+            <input
+              type="checkbox"
+              checked={productIsOnSale}
+              onChange={(event) => setProductIsOnSale(event.target.checked)}
+            />
+            <span>
+              <strong>Mark as Sale product</strong>
+              <small className={styles.formHint}>This product will appear in the SALE page.</small>
+            </span>
+          </label>
 
-          <div style={{ display: "flex", gap: "0.6rem" }}>
-            <button type="submit" style={{ padding: "0.55rem 0.8rem" }}>
+          <div className={styles.actions}>
+            <button type="submit">
               {editingProductId ? "Update product" : "Create product"}
             </button>
             {editingProductId ? (
               <button
                 type="button"
-                style={{ padding: "0.55rem 0.8rem" }}
                 onClick={() => {
                   setEditingProductId(null);
                   setProductName("");
@@ -273,6 +291,7 @@ export default function AdminProductsPage() {
                   setProductPrice("");
                   setProductImageUrl("");
                   setProductCategoryId("");
+                  setProductIsOnSale(false);
                 }}
               >
                 Cancel edit
@@ -282,24 +301,22 @@ export default function AdminProductsPage() {
         </form>
       </section>
 
-      <section style={{ marginTop: "1.2rem", border: "1px solid #ddd", padding: "1rem" }}>
-        <h2 style={{ marginBottom: "0.8rem" }}>All products</h2>
+      <section className={`${styles.section} ${styles.card}`}>
+        <h2 className={styles.sectionHeading}>All products</h2>
         {products.length === 0 ? <p>No products yet.</p> : null}
 
-        <div style={{ display: "grid", gap: "0.8rem" }}>
+        <div className={styles.list}>
           {products.map((product) => (
-            <article
-              key={product.id}
-              style={{ border: "1px solid #eee", borderRadius: 6, padding: "0.8rem" }}
-            >
+            <article key={product.id} className={styles.row}>
               <h3>
                 {product.name} - ${product.price.toFixed(2)}
               </h3>
               <p style={{ marginTop: "0.35rem" }}>
                 Category: {product.categoryName ?? `ID ${product.categoryId}`}
               </p>
+              {product.isOnSale ? <p style={{ marginTop: "0.3rem", color: "#b91c1c" }}>SALE TAGGED</p> : null}
               {product.description ? <p style={{ marginTop: "0.35rem" }}>{product.description}</p> : null}
-              <div style={{ display: "flex", gap: "0.6rem", marginTop: "0.6rem" }}>
+              <div className={styles.actions}>
                 <button type="button" onClick={() => onEditProduct(product)}>
                   Edit
                 </button>
@@ -311,6 +328,7 @@ export default function AdminProductsPage() {
           ))}
         </div>
       </section>
-    </main>
+      </main>
+    </AdminShell>
   );
 }
