@@ -1,10 +1,10 @@
 import type { DashboardAnalytics } from "../types";
+import { getAuthToken } from "@/features/auth/utils/auth-storage";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
-const TOKEN_KEY = "auth_token";
 
 function authHeaders(): HeadersInit {
-  const token = localStorage.getItem(TOKEN_KEY);
+  const token = getAuthToken();
   return {
     "Content-Type": "application/json",
     Authorization: token ? `Bearer ${token}` : "",
