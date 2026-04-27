@@ -37,7 +37,10 @@ export async function ensureCategoriesTable(): Promise<void> {
       ('bags', 'Handbags, totes, and crossbody styles'),
       ('shoes', 'Heels, flats, sneakers, and footwear'),
       ('beauty', 'Beauty essentials and cosmetics'),
-      ('perfume', 'Fragrances and scented products')
+      ('perfume', 'Fragrances and scented products'),
+      ('accessories', 'Jewelry, sunglasses, and small fashion accessories'),
+      ('skincare', 'Cleansers, serums, moisturizers, and treatment products'),
+      ('makeup', 'Face, eye, and lip makeup essentials')
     ON CONFLICT (name) DO NOTHING;
   `);
 }
