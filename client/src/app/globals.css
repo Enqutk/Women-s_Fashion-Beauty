@@ -87,38 +87,15 @@ button:hover,
 a:hover,
 [class*="card"]:hover,
 [class*="Card"]:hover {
-  transform: translateY(-4px) rotateX(1.5deg) rotateY(-1.5deg);
-  box-shadow: 0 14px 34px rgba(26, 26, 26, 0.16);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(26, 26, 26, 0.14);
 }
 
 button:active,
 a:active,
 [class*="card"]:active,
 [class*="Card"]:active {
-  transform: translateY(-1px) scale(0.99) rotateX(0deg) rotateY(0deg);
-}
-
-[class*="heroImage"],
-[class*="dealImage"],
-[class*="categoryCard"],
-[class*="productImage"],
-[class*="banner"] {
-  animation: floatDrift 6s ease-in-out infinite;
-  will-change: transform;
-}
-
-[class*="dealCard"]:nth-child(2n),
-[class*="categoryCard"]:nth-child(2n),
-article:nth-of-type(2n) {
-  animation-duration: 7.5s;
-  animation-delay: 0.2s;
-}
-
-[class*="dealCard"]:nth-child(3n),
-[class*="categoryCard"]:nth-child(3n),
-article:nth-of-type(3n) {
-  animation-duration: 8.6s;
-  animation-delay: 0.4s;
+  transform: translateY(-1px) scale(0.99);
 }
 
 img,
@@ -237,24 +214,6 @@ button:disabled {
   }
 }
 
-@keyframes floatDrift {
-  0% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-  25% {
-    transform: translate3d(0, -4px, 0) rotate(0.35deg);
-  }
-  50% {
-    transform: translate3d(0, -7px, 0) rotate(0deg);
-  }
-  75% {
-    transform: translate3d(0, -4px, 0) rotate(-0.35deg);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html,
   body {
@@ -266,14 +225,6 @@ button:disabled {
   }
 
   body * {
-    animation: none;
-  }
-
-  [class*="heroImage"],
-  [class*="dealImage"],
-  [class*="categoryCard"],
-  [class*="productImage"],
-  [class*="banner"] {
     animation: none;
   }
 
