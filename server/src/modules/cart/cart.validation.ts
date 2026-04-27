@@ -1,14 +1,18 @@
 import { z } from "zod";
 import type { AddCartItemInput, UpdateCartItemInput } from "./cart.model";
 
-const addItemSchema = z.object({
-  productId: z.number().int().positive(),
-  quantity: z.number().int().min(1).max(99).default(1),
-});
+const addItemSchema = z
+  .object({
+    productId: z.number().int().positive(),
+    quantity: z.number().int().min(1).max(99).default(1),
+  })
+  .strict();
 
-const updateItemSchema = z.object({
-  quantity: z.number().int().min(1).max(99),
-});
+const updateItemSchema = z
+  .object({
+    quantity: z.number().int().min(1).max(99),
+  })
+  .strict();
 
 export function validateAddCartItemInput(input: unknown): AddCartItemInput {
   return addItemSchema.parse(input);
