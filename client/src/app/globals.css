@@ -33,16 +33,133 @@ body {
   margin: 0;
   padding: 0;
   transition:
-    color 0.22s ease,
-    background-color 0.22s ease,
-    border-color 0.22s ease,
-    opacity 0.22s ease,
-    transform 0.22s ease,
-    box-shadow 0.22s ease;
+    color 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body * {
-  animation: fadeSlideIn 0.45s ease both;
+  animation: fadeSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+main > *,
+section,
+article {
+  animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+main > *:nth-child(1),
+section:nth-of-type(1),
+article:nth-of-type(1) {
+  animation-delay: 0.04s;
+}
+
+main > *:nth-child(2),
+section:nth-of-type(2),
+article:nth-of-type(2) {
+  animation-delay: 0.1s;
+}
+
+main > *:nth-child(3),
+section:nth-of-type(3),
+article:nth-of-type(3) {
+  animation-delay: 0.16s;
+}
+
+main > *:nth-child(4),
+section:nth-of-type(4),
+article:nth-of-type(4) {
+  animation-delay: 0.22s;
+}
+
+button,
+a,
+[class*="card"],
+[class*="Card"] {
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow, filter;
+}
+
+button:hover,
+a:hover,
+[class*="card"]:hover,
+[class*="Card"]:hover {
+  transform: translateY(-4px) rotateX(1.5deg) rotateY(-1.5deg);
+  box-shadow: 0 14px 34px rgba(26, 26, 26, 0.16);
+}
+
+button:active,
+a:active,
+[class*="card"]:active,
+[class*="Card"]:active {
+  transform: translateY(-1px) scale(0.99) rotateX(0deg) rotateY(0deg);
+}
+
+[class*="heroImage"],
+[class*="dealImage"],
+[class*="categoryCard"],
+[class*="productImage"],
+[class*="banner"] {
+  animation: floatDrift 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+[class*="dealCard"]:nth-child(2n),
+[class*="categoryCard"]:nth-child(2n),
+article:nth-of-type(2n) {
+  animation-duration: 7.5s;
+  animation-delay: 0.2s;
+}
+
+[class*="dealCard"]:nth-child(3n),
+[class*="categoryCard"]:nth-child(3n),
+article:nth-of-type(3n) {
+  animation-duration: 8.6s;
+  animation-delay: 0.4s;
+}
+
+img,
+[class*="image"],
+[class*="Image"] {
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+a:hover img,
+article:hover img,
+[class*="card"]:hover img,
+[class*="Card"]:hover img {
+  transform: scale(1.05);
+  filter: saturate(1.08);
+}
+
+button,
+a {
+  position: relative;
+  overflow: hidden;
+}
+
+button::after,
+a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 35%,
+    transparent 70%
+  );
+  transform: translateX(-140%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+
+button:hover::after,
+a:hover::after {
+  transform: translateX(140%);
 }
 
 h1,
@@ -83,7 +200,10 @@ button {
   padding: 0.6rem 0.9rem;
   cursor: pointer;
   font-weight: 600;
-  transition: opacity 0.2s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 button:hover {
@@ -98,11 +218,40 @@ button:disabled {
 @keyframes fadeSlideIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes floatDrift {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(0, -4px, 0) rotate(0.35deg);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0) rotate(0deg);
+  }
+  75% {
+    transform: translate3d(0, -4px, 0) rotate(-0.35deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
   }
 }
 
@@ -118,5 +267,18 @@ button:disabled {
 
   body * {
     animation: none;
+  }
+
+  [class*="heroImage"],
+  [class*="dealImage"],
+  [class*="categoryCard"],
+  [class*="productImage"],
+  [class*="banner"] {
+    animation: none;
+  }
+
+  button::after,
+  a::after {
+    display: none;
   }
 }
