@@ -12,6 +12,7 @@ export type Product = {
   imageUrl: string | null;
   categoryId: number;
   categoryName: string | null;
+  isOnSale: boolean;
   createdAt: string;
   updatedAt: string;
 };
