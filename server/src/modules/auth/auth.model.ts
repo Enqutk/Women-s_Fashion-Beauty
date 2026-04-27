@@ -1,10 +1,9 @@
-import type { PublicUser, UserRole } from "../user";
+import type { PublicUser } from "../user";
 
 export type RegisterInput = {
   name: string;
   email: string;
   password: string;
-  role: UserRole;
 };
 
 export type LoginInput = {
