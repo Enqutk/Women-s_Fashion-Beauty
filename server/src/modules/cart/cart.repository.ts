@@ -34,6 +34,10 @@ export async function ensureCartItemsTable(): Promise<void> {
       PRIMARY KEY (user_id, product_id)
     );
   `);
+  await pool.query(`
+    CREATE INDEX IF NOT EXISTS cart_items_user_created_idx
+    ON cart_items (user_id, created_at DESC);
+  `);
 }
 
 export async function getCartItemsByUserId(userId: number): Promise<CartItem[]> {
