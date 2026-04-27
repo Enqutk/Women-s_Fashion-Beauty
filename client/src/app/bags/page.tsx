@@ -5,10 +5,18 @@ import styles from "./bags.module.css";
 
 export default async function BagsPage() {
   const products = await fetchProducts();
-  const featured = products
-    .filter((product) => (product.categoryName ?? "").toLowerCase().includes("bag"))
+  const bagProducts = products
+    .filter((product) => {
+      const categoryName = (product.categoryName ?? "").toLowerCase();
+      const productName = (product.name ?? "").toLowerCase();
+      const productDescription = (product.description ?? "").toLowerCase();
+      return (
+        categoryName.includes("bag") ||
+        productName.includes("bag") ||
+        productDescription.includes("bag")
+      );
+    })
     .slice(0, 12);
-  const visibleProducts = featured.length > 0 ? featured : products.slice(0, 12);
 
   return (
     <main className={styles.page}>
@@ -27,31 +35,37 @@ export default async function BagsPage() {
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Bags Favorites</h2>
           <div className={styles.grid}>
-            {visibleProducts.map((product) => (
-              <article className={styles.item} key={product.id}>
-                <Link href={`/products/${product.id}`} className={styles.itemLink}>
-                  <div className={styles.itemImage}>
-                    {product.imageUrl ? (
-                      <img src={product.imageUrl} alt={product.name} className={styles.itemImageEl} />
-                    ) : (
-                      "Image"
-                    )}
-                  </div>
-                </Link>
-                <div className={styles.itemBody}>
+            {bagProducts.length > 0 ? (
+              bagProducts.map((product) => (
+                <article className={styles.item} key={product.id}>
                   <Link href={`/products/${product.id}`} className={styles.itemLink}>
-                    <p className={styles.itemName}>{product.name}</p>
+                    <div className={styles.itemImage}>
+                      {product.imageUrl ? (
+                        <img src={product.imageUrl} alt={product.name} className={styles.itemImageEl} />
+                      ) : (
+                        "Image"
+                      )}
+                    </div>
                   </Link>
-                  <div className={styles.itemPriceRow}>
-                    <span className={styles.itemPrice}>${product.price.toFixed(2)}</span>
-                    <span className={styles.tag}>Stock</span>
+                  <div className={styles.itemBody}>
+                    <Link href={`/products/${product.id}`} className={styles.itemLink}>
+                      <p className={styles.itemName}>{product.name}</p>
+                    </Link>
+                    <div className={styles.itemPriceRow}>
+                      <span className={styles.itemPrice}>${product.price.toFixed(2)}</span>
+                      <span className={styles.tag}>Stock</span>
+                    </div>
+                    <div className={styles.actionRow}>
+                      <AddToCartButton productId={product.id} />
+                    </div>
                   </div>
-                  <div className={styles.actionRow}>
-                    <AddToCartButton productId={product.id} />
-                  </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              ))
+            ) : (
+              <p style={{ color: "#6b7280", padding: "0.4rem" }}>
+                No bag products available yet. Add products with a bag category to show them here.
+              </p>
+            )}
           </div>
         </section>
 
