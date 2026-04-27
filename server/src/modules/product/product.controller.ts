@@ -7,6 +7,7 @@ import {
   updateProductService,
 } from "./product.service";
 import { validateCreateProductInput, validateUpdateProductInput } from "./product.validation";
+import { parsePositiveIntParam } from "../../utils/request.utils";
 
 export async function createProductController(req: Request, res: Response): Promise<void> {
   try {
@@ -26,8 +27,8 @@ export async function listProductsController(_req: Request, res: Response): Prom
 }
 
 export async function getProductController(req: Request, res: Response): Promise<void> {
-  const id = Number(req.params.id);
-  if (!Number.isInteger(id)) {
+  const id = parsePositiveIntParam(req.params.id);
+  if (!id) {
     res.status(400).json({ ok: false, message: "Invalid product id" });
     return;
   }
@@ -41,8 +42,8 @@ export async function getProductController(req: Request, res: Response): Promise
 
 export async function updateProductController(req: Request, res: Response): Promise<void> {
   try {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id)) {
+    const id = parsePositiveIntParam(req.params.id);
+    if (!id) {
       res.status(400).json({ ok: false, message: "Invalid product id" });
       return;
     }
@@ -61,8 +62,8 @@ export async function updateProductController(req: Request, res: Response): Prom
 }
 
 export async function deleteProductController(req: Request, res: Response): Promise<void> {
-  const id = Number(req.params.id);
-  if (!Number.isInteger(id)) {
+  const id = parsePositiveIntParam(req.params.id);
+  if (!id) {
     res.status(400).json({ ok: false, message: "Invalid product id" });
     return;
   }
