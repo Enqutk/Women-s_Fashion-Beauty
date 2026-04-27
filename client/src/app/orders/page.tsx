@@ -4,6 +4,17 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchUserOrders } from "@/features/order/services/order.api";
 import type { Order } from "@/features/order/types";
+import styles from "./orders.module.css";
+
+function statusClass(status: string): string {
+  if (status === "completed") {
+    return `${styles.status} ${styles.completed}`;
+  }
+  if (status === "cancelled") {
+    return `${styles.status} ${styles.cancelled}`;
+  }
+  return `${styles.status} ${styles.pending}`;
+}
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -27,41 +38,41 @@ export default function OrdersPage() {
   }, []);
 
   return (
-    <main style={{ maxWidth: 900, margin: "0 auto", padding: "2rem 1rem" }}>
-      <h1>Order History</h1>
-      <p style={{ marginTop: "0.5rem", color: "#555" }}>View all your placed orders.</p>
+    <main className={styles.page}>
+      <h1 className={styles.title}>Order History</h1>
+      <p className={styles.subtitle}>View all your placed orders.</p>
 
-      {loading ? <p style={{ marginTop: "1rem" }}>Loading orders...</p> : null}
-      {error ? <p style={{ marginTop: "1rem", color: "crimson" }}>{error}</p> : null}
+      {loading ? <p className={styles.state}>Loading orders...</p> : null}
+      {error ? <p className={styles.error}>{error}</p> : null}
 
       {!loading && orders.length === 0 ? (
-        <div style={{ marginTop: "1rem" }}>
+        <div className={styles.empty}>
           <p>No orders yet.</p>
-          <Link href="/products">Shop now</Link>
+          <Link href="/products" className={styles.shopLink}>
+            Shop now
+          </Link>
         </div>
       ) : null}
 
-      <section style={{ marginTop: "1rem", display: "grid", gap: "0.9rem" }}>
+      <section className={styles.list}>
         {orders.map((order) => (
-          <article
-            key={order.id}
-            style={{ border: "1px solid #ddd", borderRadius: 8, padding: "0.9rem" }}
-          >
-            <h2 style={{ fontSize: 18 }}>Order #{order.id}</h2>
-            <p style={{ marginTop: "0.35rem" }}>
-              Status: {order.status} | Total: ${order.total.toFixed(2)}
-            </p>
-            <p style={{ marginTop: "0.35rem", color: "#666" }}>
-              Placed: {new Date(order.createdAt).toLocaleString()}
-            </p>
-            <ul style={{ marginTop: "0.55rem", paddingLeft: "1.2rem" }}>
+          <article key={order.id} className={styles.card}>
+            <div className={styles.cardHeader}>
+              <p className={styles.orderId}>Order #{order.id}</p>
+              <span className={statusClass(order.status)}>{order.status}</span>
+            </div>
+            <div className={styles.items}>
+              <p className={styles.meta}>Placed: {new Date(order.createdAt).toLocaleString()}</p>
+              <p className={styles.meta}>Total: ${order.total.toFixed(2)}</p>
               {order.items.map((item) => (
-                <li key={`${order.id}-${item.productId}`}>
-                  {item.productName} - {item.quantity} x ${item.unitPrice.toFixed(2)} = $
-                  {item.lineTotal.toFixed(2)}
-                </li>
+                <div key={`${order.id}-${item.productId}`} className={styles.itemRow}>
+                  <span className={styles.itemName}>
+                    {item.productName} x {item.quantity}
+                  </span>
+                  <span className={styles.itemValue}>${item.lineTotal.toFixed(2)}</span>
+                </div>
               ))}
-            </ul>
+            </div>
           </article>
         ))}
       </section>
