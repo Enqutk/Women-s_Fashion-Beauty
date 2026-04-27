@@ -1,0 +1,216 @@
+.page {
+  width: 100%;
+  padding: 0.8rem 1rem 2.5rem;
+}
+
+.hero {
+  margin-top: 0;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  min-height: 360px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.heroImage {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    url("https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80")
+      center/cover no-repeat;
+}
+
+.heroContent {
+  background: #fff;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.heroTitle {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.04;
+  text-transform: uppercase;
+}
+
+.heroSubtitle {
+  margin-top: 0.8rem;
+  color: var(--color-muted);
+}
+
+.cta {
+  margin-top: 1rem;
+  display: inline-block;
+  width: fit-content;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 4px;
+  padding: 0.7rem 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.section {
+  margin-top: 2rem;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+  text-transform: uppercase;
+}
+
+.categoryGrid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.categoryCard {
+  border: 1px solid #f6e4e1;
+  border-radius: 8px;
+  min-height: 150px;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-end;
+  font-family: var(--font-montserrat), Arial, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.bag {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.35)),
+    url("https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=700&q=80")
+      center/cover no-repeat;
+}
+
+.shoe {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.35)),
+    url("https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=700&q=80")
+      center/cover no-repeat;
+}
+
+.perfume {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.35)),
+    url("https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=700&q=80")
+      center/cover no-repeat;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.seeAll {
+  color: var(--color-accent);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.pillRow {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pill {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.38rem 0.72rem;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.dealGrid {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.dealCard {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.dealImage {
+  height: 150px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 0.85rem;
+  position: relative;
+}
+
+.dealImageEl {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.discountTag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  padding: 0.2rem 0.45rem;
+}
+
+.dealBody {
+  padding: 0.7rem;
+}
+
+.dealName {
+  font-size: 0.9rem;
+  min-height: 38px;
+}
+
+.dealPriceRow {
+  margin-top: 0.35rem;
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.dealPrice {
+  font-weight: 800;
+}
+
+.dealOldPrice {
+  color: #9ca3af;
+  text-decoration: line-through;
+  font-size: 0.84rem;
+}
+
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .categoryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dealGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
