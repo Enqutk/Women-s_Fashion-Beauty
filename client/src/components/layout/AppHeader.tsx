@@ -136,7 +136,17 @@ export default function AppHeader() {
   const visibleCategories = topCategories.slice(0, 6);
   const activeCategoryId = Number(searchParams.get("category"));
   const isBeautyCategoryActive = beautyChildren.some((category) => category.id === activeCategoryId);
-  const isBeautyActive = pathname === "/beauty" || (pathname === "/products" && isBeautyCategoryActive);
+  const categoryPathPrefix = "/products/category/";
+  const activeCategorySlug = pathname.startsWith(categoryPathPrefix)
+    ? pathname.slice(categoryPathPrefix.length).toLowerCase()
+    : null;
+  const isBeautySlugActive =
+    activeCategorySlug !== null &&
+    (activeCategorySlug === "beauty" || beautyChildren.some((c) => c.name.toLowerCase() === activeCategorySlug));
+  const isBeautyActive =
+    pathname === "/beauty" ||
+    (pathname === "/products" && isBeautyCategoryActive) ||
+    isBeautySlugActive;
 
   const closeMenu = (): void => {
     setIsMenuOpen(false);
@@ -144,13 +154,10 @@ export default function AppHeader() {
 
   const categoryHref = (category: Category): string => {
     const slug = category.name.toLowerCase();
-    if (["clothing", "bags", "shoes", "shoe", "beauty", "accessories"].includes(slug)) {
-      if (slug === "shoe") {
-        return "/shoes";
-      }
-      return `/${slug}`;
+    if (slug === "shoe") {
+      return "/products/category/shoes";
     }
-    return `/products?category=${category.id}`;
+    return `/products/category/${slug}`;
   };
 
   return (
@@ -197,7 +204,8 @@ export default function AppHeader() {
               href={categoryHref(category)}
               className={`${styles.navLink} ${
                 (pathname === "/products" && activeCategoryId === category.id) ||
-                pathname === `/${category.name.toLowerCase()}`
+                activeCategorySlug === category.name.toLowerCase() ||
+                (category.name.toLowerCase() === "shoe" && activeCategorySlug === "shoes")
                   ? styles.activeNavLink
                   : ""
               }`}
@@ -219,9 +227,10 @@ export default function AppHeader() {
                 {beautyChildren.map((category) => (
                   <Link
                     key={category.id}
-                    href={`/products?category=${category.id}`}
+                    href={`/products/category/${category.name.toLowerCase()}`}
                     className={`${styles.beautySubLink} ${
-                      pathname === "/products" && activeCategoryId === category.id
+                      (pathname === "/products" && activeCategoryId === category.id) ||
+                      activeCategorySlug === category.name.toLowerCase()
                         ? styles.activeBeautySubLink
                         : ""
                     }`}
