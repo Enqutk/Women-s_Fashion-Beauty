@@ -1,9 +1,27 @@
 .page {
-  padding: 0.2rem 0 0.6rem;
+  padding: 0.2rem 0 0.8rem;
 }
 
 .title {
-  font-size: 2rem;
+  font-size: clamp(1.6rem, 2.8vw, 2rem);
+}
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.badge {
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 0.45rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .muted {
@@ -33,10 +51,36 @@
   gap: 0.8rem;
 }
 
+.kpiCard {
+  background: linear-gradient(180deg, #ffffff, #fcfdff);
+  border: 1px solid #e6eaf0;
+  border-radius: 12px;
+  padding: 0.95rem 1rem;
+}
+
+.kpiLabel {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.kpiValue {
+  margin-top: 0.35rem;
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
 .card {
   background: #fff;
   border: 1px solid var(--color-border);
   border-radius: 8px;
+  padding: 1rem;
+}
+
+.chartCard {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
   padding: 1rem;
 }
 
@@ -63,9 +107,42 @@
   margin-top: 1rem;
 }
 
+.sectionHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+}
+
 .sectionHeading {
   margin-bottom: 0.8rem;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
+}
+
+.formTitle {
+  font-size: 0.98rem;
+  margin-bottom: 0.2rem;
+}
+
+.productDescriptionField {
+  min-height: 90px;
+}
+
+.imagePreviewWrap {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #fafafa;
+  padding: 0.6rem;
+}
+
+.imagePreview {
+  margin-top: 0.35rem;
+  width: 100%;
+  max-width: 220px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
 }
 
 .narrowButton {
@@ -105,6 +182,74 @@
   margin-top: 0.6rem;
 }
 
+.manageCategoryTabs {
+  margin-top: 0.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.manageCategoryTab {
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.manageCategoryTabActive {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.categoryGroup {
+  margin-top: 1rem;
+  border-top: 1px solid #ececec;
+  padding-top: 0.8rem;
+}
+
+.categoryGroup:first-of-type {
+  margin-top: 0.2rem;
+  border-top: 0;
+  padding-top: 0;
+}
+
+.categoryHeadingRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.categoryHeading {
+  font-size: 1rem;
+}
+
+.categoryCount {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.emptyCategoryText {
+  margin-top: 0.5rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.metaText {
+  margin-top: 0.35rem;
+}
+
+.saleTag {
+  margin-top: 0.3rem;
+  color: #b91c1c;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
 .chartRow {
   display: grid;
   grid-template-columns: 120px 1fr 50px;
@@ -112,8 +257,17 @@
   align-items: center;
 }
 
+.statusLabel {
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.statusCount {
+  text-align: right;
+}
+
 .barTrack {
-  background: #efefef;
+  background: #f1f5f9;
   height: 12px;
   border-radius: 999px;
 }
@@ -123,7 +277,28 @@
   border-radius: 999px;
 }
 
+.barCompleted {
+  background: #22c55e;
+}
+
+.barCancelled {
+  background: #ef4444;
+}
+
+.barPending {
+  background: #3b82f6;
+}
+
 @media (max-width: 920px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .sectionHeaderRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .kpiGrid {
     grid-template-columns: 1fr;
   }
