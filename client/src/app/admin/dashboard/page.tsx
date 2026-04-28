@@ -43,65 +43,72 @@ export default function AdminDashboardPage() {
     [analytics.orderStatusBreakdown],
   );
 
+  const completionRate = useMemo(() => {
+    const completedCount =
+      analytics.orderStatusBreakdown.find((entry) => entry.status === "completed")?.count ?? 0;
+    if (analytics.totalOrders <= 0) {
+      return "0%";
+    }
+    return `${Math.round((completedCount / analytics.totalOrders) * 100)}%`;
+  }, [analytics.orderStatusBreakdown, analytics.totalOrders]);
+
   return (
     <AdminShell title="Dashboard Overview">
       <main className={styles.page}>
-      <h1 className={styles.title}>Dashboard Overview</h1>
-      <p className={styles.muted}>
-        Overview of key platform metrics for users, orders, and products.
-      </p>
+        <header className={styles.hero}>
+          <div>
+            <h1 className={styles.title}>Dashboard Overview</h1>
+            <p className={styles.muted}>
+              Snapshot of users, sales activity, and product inventory health.
+            </p>
+          </div>
+          <div className={styles.badge}>Completion Rate: {completionRate}</div>
+        </header>
 
-      {loading ? <p className={styles.alert}>Loading dashboard...</p> : null}
-      {error ? <p className={`${styles.alert} ${styles.error}`}>{error}</p> : null}
+        {loading ? <p className={styles.alert}>Loading dashboard...</p> : null}
+        {error ? <p className={`${styles.alert} ${styles.error}`}>{error}</p> : null}
 
-      <section className={styles.kpiGrid}>
-        <article className={styles.card}>
-          <p className={styles.muted}>Total Users</p>
-          <p style={{ fontSize: 28, fontWeight: 700 }}>{analytics.totalUsers}</p>
-        </article>
+        <section className={styles.kpiGrid}>
+          <article className={styles.kpiCard}>
+            <p className={styles.kpiLabel}>Total Users</p>
+            <p className={styles.kpiValue}>{analytics.totalUsers}</p>
+          </article>
 
-        <article className={styles.card}>
-          <p className={styles.muted}>Total Orders</p>
-          <p style={{ fontSize: 28, fontWeight: 700 }}>{analytics.totalOrders}</p>
-        </article>
+          <article className={styles.kpiCard}>
+            <p className={styles.kpiLabel}>Total Orders</p>
+            <p className={styles.kpiValue}>{analytics.totalOrders}</p>
+          </article>
 
-        <article className={styles.card}>
-          <p className={styles.muted}>Total Products</p>
-          <p style={{ fontSize: 28, fontWeight: 700 }}>{analytics.totalProducts}</p>
-        </article>
-      </section>
+          <article className={styles.kpiCard}>
+            <p className={styles.kpiLabel}>Total Products</p>
+            <p className={styles.kpiValue}>{analytics.totalProducts}</p>
+          </article>
+        </section>
 
-      <section className={`${styles.section} ${styles.card}`}>
-        <h2 style={{ fontSize: 20 }}>Order Status Chart</h2>
-        <p className={styles.muted}>
-          Simple status distribution to track fulfillment progress.
-        </p>
-        <div className={styles.list}>
-          {analytics.orderStatusBreakdown.map((entry) => {
-            const width = `${Math.max((entry.count / maxStatusCount) * 100, entry.count > 0 ? 8 : 0)}%`;
-            return (
-              <div key={entry.status} className={styles.chartRow}>
-                <span style={{ textTransform: "capitalize" }}>{entry.status}</span>
-                <div className={styles.barTrack}>
-                  <div
-                    className={styles.bar}
-                    style={{
-                      width,
-                      background:
-                        entry.status === "completed"
-                          ? "#22c55e"
-                          : entry.status === "cancelled"
-                            ? "#ef4444"
-                            : "#3b82f6",
-                    }}
-                  />
+        <section className={`${styles.section} ${styles.chartCard}`}>
+          <h2 className={styles.sectionHeading}>Order Status Distribution</h2>
+          <p className={styles.muted}>Track fulfillment flow at a glance.</p>
+          <div className={styles.list}>
+            {analytics.orderStatusBreakdown.map((entry) => {
+              const width = `${Math.max((entry.count / maxStatusCount) * 100, entry.count > 0 ? 8 : 0)}%`;
+              const barClassName =
+                entry.status === "completed"
+                  ? styles.barCompleted
+                  : entry.status === "cancelled"
+                    ? styles.barCancelled
+                    : styles.barPending;
+              return (
+                <div key={entry.status} className={styles.chartRow}>
+                  <span className={styles.statusLabel}>{entry.status}</span>
+                  <div className={styles.barTrack}>
+                    <div className={`${styles.bar} ${barClassName}`} style={{ width }} />
+                  </div>
+                  <strong className={styles.statusCount}>{entry.count}</strong>
                 </div>
-                <strong>{entry.count}</strong>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+              );
+            })}
+          </div>
+        </section>
       </main>
     </AdminShell>
   );
