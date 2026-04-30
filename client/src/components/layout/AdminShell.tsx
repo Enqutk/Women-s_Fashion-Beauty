@@ -14,6 +14,8 @@ const links = [
   { href: "/admin/dashboard", label: "Dashboard" },
   { href: "/admin/products", label: "Products" },
   { href: "/admin/orders", label: "Orders" },
+  { href: "/admin/users", label: "Users" },
+  { href: "/admin/settings", label: "Settings" },
 ];
 
 export default function AdminShell({ title, children }: AdminShellProps) {
@@ -22,7 +24,8 @@ export default function AdminShell({ title, children }: AdminShellProps) {
   return (
     <section className={styles.shell}>
       <aside className={styles.sidebar}>
-        <div className={styles.brand}>Mintech Solution.</div>
+        <div className={styles.brand}>Beauty Admin</div>
+        <p className={styles.brandMeta}>Management workspace</p>
         <nav className={styles.menu}>
           {links.map((link) => {
             const isActive = pathname === link.href;
@@ -36,8 +39,6 @@ export default function AdminShell({ title, children }: AdminShellProps) {
               </Link>
             );
           })}
-          <span className={styles.menuLink}>Users</span>
-          <span className={styles.menuLink}>Settings</span>
         </nav>
       </aside>
 
@@ -45,8 +46,7 @@ export default function AdminShell({ title, children }: AdminShellProps) {
         <div className={styles.topbar}>
           <p className={styles.title}>{title}</p>
           <div className={styles.topActions}>
-            <span>Search</span>
-            <span>Admin</span>
+            <span className={styles.rolePill}>Administrator</span>
           </div>
         </div>
         <div className={styles.body}>{children}</div>
