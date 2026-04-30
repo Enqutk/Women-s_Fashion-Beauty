@@ -66,6 +66,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
       : strengthScore <= 4
         ? styles.strengthMedium
         : styles.strengthStrong;
+  const showPasswordStrength = isRegister && password.length > 0;
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -167,12 +168,16 @@ export default function AuthForm({ mode }: AuthFormProps) {
             />
             {isRegister ? (
               <>
-                <p className={`${styles.strength} ${passwordStrengthClass}`}>
-                  {passwordStrengthLabel}
-                </p>
-                <p className={styles.strengthHint}>
-                  Use 8+ chars with uppercase, lowercase, number, and symbol.
-                </p>
+                {showPasswordStrength ? (
+                  <>
+                    <p className={`${styles.strength} ${passwordStrengthClass}`}>
+                      {passwordStrengthLabel}
+                    </p>
+                    <p className={styles.strengthHint}>
+                      Use 8+ chars with uppercase, lowercase, number, and symbol.
+                    </p>
+                  </>
+                ) : null}
                 <input
                   required
                   type="password"
