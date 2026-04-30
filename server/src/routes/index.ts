@@ -6,6 +6,7 @@ import categoryRoutes from "../modules/category";
 import healthRoutes from "../modules/health";
 import orderRoutes from "../modules/order";
 import productRoutes from "../modules/product";
+import userRoutes from "../modules/user";
 
 const router = Router();
 
@@ -14,6 +15,7 @@ router.use("/auth", authRoutes);
 router.use("/admin/analytics", analyticsRoutes);
 router.use("/cart", cartRoutes);
 router.use("/orders", orderRoutes);
+router.use("/admin/users", userRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/products", productRoutes);
 
