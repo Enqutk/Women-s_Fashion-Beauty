@@ -1,5 +1,7 @@
 import { clearCartByUserId } from "../cart/cart.repository";
 import { getCartByUserId } from "../cart/cart.service";
+import { sendOrderPlacedEmail, sendOrderStatusUpdatedEmail } from "../notification/email.service";
+import { findUserById } from "../user/user.repository";
 import { createOrderWithItems, listAllOrders, listOrdersByUserId, updateOrderStatus } from "./order.repository";
 import type { Order } from "./order.model";
 
@@ -21,6 +23,18 @@ export async function placeOrder(userId: number): Promise<Order> {
   });
 
   await clearCartByUserId(userId);
+
+  const user = await findUserById(userId);
+  if (user) {
+    void sendOrderPlacedEmail({
+      to: user.email,
+      customerName: user.name,
+      order,
+    }).catch((error) => {
+      console.error("Failed to send order confirmation email:", error);
+    });
+  }
+
   return order;
 }
 
@@ -36,5 +50,22 @@ export async function updateOrderStatusService(
   orderId: number,
   status: "pending" | "completed" | "cancelled",
 ): Promise<Order | null> {
-  return updateOrderStatus(orderId, status);
+  const updatedOrder = await updateOrderStatus(orderId, status);
+  if (!updatedOrder) {
+    return null;
+  }
+
+  const user = await findUserById(updatedOrder.userId);
+  if (user) {
+    void sendOrderStatusUpdatedEmail({
+      to: user.email,
+      customerName: user.name,
+      order: updatedOrder,
+      status,
+    }).catch((error) => {
+      console.error("Failed to send order status email:", error);
+    });
+  }
+
+  return updatedOrder;
 }
