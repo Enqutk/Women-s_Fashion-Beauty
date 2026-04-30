@@ -5,7 +5,7 @@
 
 .hero {
   margin-top: 0;
-  min-height: 420px;
+  min-height: clamp(420px, 52vh, 560px);
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--color-border);
@@ -13,7 +13,7 @@
 
 .heroImage {
   position: relative;
-  min-height: 420px;
+  min-height: clamp(420px, 52vh, 560px);
   isolation: isolate;
 }
 
@@ -50,21 +50,41 @@
   margin-top: 1rem;
   display: inline-block;
   width: fit-content;
-  background: #f59e0b;
-  color: #111827;
-  border-radius: 4px;
-  padding: 0.7rem 1.2rem;
+  background: var(--color-primary);
+  color: #fff;
+  border: 1px solid var(--color-primary);
+  border-radius: 8px;
+  padding: 0.72rem 1.2rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
+  font-size: 0.92rem;
+}
+
+.cta:hover {
+  background: #2a2a2a;
+  border-color: #2a2a2a;
 }
 
 .heroSlide {
   position: absolute;
   inset: 0;
   opacity: 0;
-  background-position: center;
-  background-size: cover;
+  isolation: isolate;
+  overflow: hidden;
   animation: heroSlideFade 15s infinite;
+}
+
+.heroSlide::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  background-image: var(--slide-image);
+  background-size: cover;
+  background-position: center;
+  filter: blur(26px) saturate(1.08);
+  transform: scale(1.08);
+  opacity: 0;
+  z-index: 0;
 }
 
 .heroSlide::after {
@@ -72,20 +92,31 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, rgba(2, 6, 23, 0.45), rgba(2, 6, 23, 0.18));
+  z-index: 2;
+}
+
+.heroSlideImage {
+  position: absolute;
+  inset: 0;
+  background-image: var(--slide-image);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  z-index: 1;
 }
 
 .slideOne {
-  background-image: url("https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1500&q=80");
+  --slide-image: url("https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1500&q=80");
   animation-delay: 0s;
 }
 
 .slideTwo {
-  background-image: url("https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1500&q=80");
+  --slide-image: url("https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1500&q=80");
   animation-delay: 5s;
 }
 
 .slideThree {
-  background-image: url("https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1500&q=80");
+  --slide-image: url("https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1500&q=80");
   animation-delay: 10s;
 }
 
@@ -268,11 +299,43 @@
 }
 
 @media (max-width: 980px) {
+  .hero,
+  .heroImage {
+    min-height: 420px;
+  }
+
   .heroContent {
     left: 1rem;
     right: 1rem;
     max-width: none;
     padding: 1.2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero,
+  .heroImage {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 21 / 8;
+  }
+
+  .heroSlide {
+    background-color: transparent;
+  }
+
+  .heroSlide::before {
+    opacity: 0.95;
+  }
+
+  .heroSlideImage {
+    background-size: contain;
+    background-position: center center;
+    background-color: transparent;
+  }
+
+  .heroSlide::after {
+    background: linear-gradient(90deg, rgba(2, 6, 23, 0.28), rgba(2, 6, 23, 0.14));
   }
 }
 
