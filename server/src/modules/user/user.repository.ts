@@ -51,6 +51,17 @@ export async function findUserByEmail(email: string): Promise<User | null> {
   return rows[0] ? mapUserRow(rows[0]) : null;
 }
 
+export async function findUserById(userId: number): Promise<User | null> {
+  const { rows } = await pool.query(
+    `SELECT id, name, email, password, role, created_at, updated_at
+     FROM users
+     WHERE id = $1
+     LIMIT 1`,
+    [userId],
+  );
+  return rows[0] ? mapUserRow(rows[0]) : null;
+}
+
 export async function createUser(input: CreateUserInput): Promise<User> {
   const { rows } = await pool.query(
     `INSERT INTO users (name, email, password, role)
@@ -65,4 +76,13 @@ export async function createUser(input: CreateUserInput): Promise<User> {
 export async function countUsers(): Promise<number> {
   const { rows } = await pool.query<{ total: string }>(`SELECT COUNT(*)::text AS total FROM users`);
   return Number(rows[0]?.total ?? 0);
+}
+
+export async function listUsers(): Promise<User[]> {
+  const { rows } = await pool.query(
+    `SELECT id, name, email, password, role, created_at, updated_at
+     FROM users
+     ORDER BY created_at DESC`,
+  );
+  return rows.map(mapUserRow);
 }
