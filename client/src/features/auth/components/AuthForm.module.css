@@ -12,6 +12,20 @@
     #fff;
 }
 
+.shell {
+  width: min(1040px, 100%);
+  display: grid;
+  grid-template-columns: 1.05fr minmax(360px, 460px);
+  border: 1px solid #ead6da;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  animation: enter 350ms ease-out;
+}
+
 .glowA,
 .glowB {
   position: absolute;
@@ -38,30 +52,76 @@
   animation: floatB 10s ease-in-out infinite;
 }
 
-.card {
-  width: 100%;
-  max-width: 560px;
-  border: 1px solid #e9d3d7;
-  border-radius: 16px;
-  padding: 1.45rem;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+.visualPanel {
   position: relative;
-  animation: enter 320ms ease-out;
+  min-height: 580px;
+  background: #121212;
+  overflow: hidden;
 }
 
-.card::before {
-  content: "";
+.visualSlide {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(183, 110, 121, 0.6), rgba(26, 26, 26, 0.1));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+  background-image: var(--slide-image);
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.05);
+  animation: heroSwitch 18s linear infinite;
+  animation-delay: var(--slide-delay);
+}
+
+.visualOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(12, 12, 12, 0.18) 0%, rgba(12, 12, 12, 0.62) 90%),
+    linear-gradient(100deg, rgba(18, 18, 18, 0.1) 0%, rgba(18, 18, 18, 0.5) 100%);
+}
+
+.visualContent {
+  position: absolute;
+  left: 1.7rem;
+  right: 1.7rem;
+  bottom: 1.7rem;
+  z-index: 2;
+  color: #fff;
+}
+
+.visualLabel {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.58rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.visualContent h2 {
+  margin-top: 0.8rem;
+  margin-bottom: 0.45rem;
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+  line-height: 1.2;
+}
+
+.visualContent p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 32ch;
+  margin: 0;
+}
+
+.card {
+  width: 100%;
+  max-width: 100%;
+  border: 0;
+  border-radius: 0;
+  padding: 1.8rem 1.6rem;
+  background: transparent;
+  box-shadow: none;
+  position: relative;
 }
 
 .badge {
@@ -103,6 +163,30 @@
   border-color: var(--color-accent);
   box-shadow: 0 0 0 4px rgba(183, 110, 121, 0.17);
   transform: translateY(-1px);
+}
+
+.strength {
+  margin: 0.2rem 0 0;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.strengthWeak {
+  color: #b91c1c;
+}
+
+.strengthMedium {
+  color: #b45309;
+}
+
+.strengthStrong {
+  color: #166534;
+}
+
+.strengthHint {
+  margin: -0.2rem 0 0.1rem;
+  font-size: 0.79rem;
+  color: var(--color-muted);
 }
 
 .submitButton {
@@ -161,6 +245,23 @@
   }
 }
 
+@keyframes heroSwitch {
+  0% {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  5%,
+  28% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  33%,
+  100% {
+    opacity: 0;
+    transform: scale(0.99);
+  }
+}
+
 @keyframes floatA {
   0%,
   100% {
@@ -181,9 +282,27 @@
   }
 }
 
+@media (max-width: 900px) {
+  .shell {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+  }
+
+  .visualPanel {
+    min-height: 280px;
+  }
+}
+
 @media (max-width: 620px) {
+  .shell {
+    border-radius: 14px;
+  }
+
+  .visualPanel {
+    display: none;
+  }
+
   .card {
-    border-radius: 12px;
-    padding: 1.1rem;
+    padding: 1.15rem;
   }
 }
