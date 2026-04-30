@@ -13,9 +13,15 @@ export default async function Home() {
     <main className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.heroImage}>
-          <div className={`${styles.heroSlide} ${styles.slideOne}`} />
-          <div className={`${styles.heroSlide} ${styles.slideTwo}`} />
-          <div className={`${styles.heroSlide} ${styles.slideThree}`} />
+          <div className={`${styles.heroSlide} ${styles.slideOne}`}>
+            <div className={styles.heroSlideImage} />
+          </div>
+          <div className={`${styles.heroSlide} ${styles.slideTwo}`}>
+            <div className={styles.heroSlideImage} />
+          </div>
+          <div className={`${styles.heroSlide} ${styles.slideThree}`}>
+            <div className={styles.heroSlideImage} />
+          </div>
           <div className={styles.heroContent}>
             <h1 className={styles.heroTitle}>Elevate Your Signature Style.</h1>
             <p className={styles.heroSubtitle}>Discover our latest spring and summer collection.</p>
