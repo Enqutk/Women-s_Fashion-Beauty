@@ -101,7 +101,7 @@ export default function CartPage() {
                 <div>
                   <div className={styles.lineTotal}>${item.lineTotal.toFixed(2)}</div>
                   {idx === 2 ? <span className={styles.saleOff}>50% OFF</span> : null}
-                  <button type="button" onClick={() => onRemove(item.productId)}>
+                  <button type="button" className={styles.removeBtn} onClick={() => onRemove(item.productId)}>
                     Remove
                   </button>
                 </div>
@@ -132,7 +132,7 @@ export default function CartPage() {
             <Link href="/checkout" className={styles.checkoutBtn}>
               Proceed To Checkout
             </Link>
-            <Link href="/orders" style={{ marginTop: "0.5rem", display: "inline-block" }}>
+            <Link href="/orders" className={styles.orderHistoryLink}>
               Order history
             </Link>
           </aside>
