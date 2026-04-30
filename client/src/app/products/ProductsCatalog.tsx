@@ -138,7 +138,8 @@ export default async function ProductsCatalog({
         {filteredProducts.length} {filteredProducts.length === 1 ? "result" : "results"}
       </p>
 
-      <section className={styles.layout}>
+      <details className={styles.filterDrawer}>
+        <summary className={styles.filterToggle}>Apply filter</summary>
         <aside className={styles.sidebar}>
           <h2 className={styles.sidebarTitle}>Price Filter</h2>
           <div className={styles.priceSection}>
@@ -213,7 +214,9 @@ export default async function ProductsCatalog({
             </div>
           </div>
         </aside>
+      </details>
 
+      <section className={styles.layout}>
         {filteredProducts.length === 0 ? (
           <section className={styles.emptyState}>
             <h2>No products found</h2>
